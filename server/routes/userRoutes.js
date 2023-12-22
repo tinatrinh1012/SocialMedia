@@ -1,14 +1,11 @@
 import express from "express";
-import mongoClient from "../database.js";
+import User from '../models/User.js';
 
 const userRouter = express.Router();
 
 userRouter.get('/', async (req, res) => {
     try {
-        const database = mongoClient.db("App");
-        const collection = database.collection("Users");
-        const cursor = collection.find({});
-        const users = await cursor.toArray();
+        const users = await User.find({});
         res.status(200).json(users);
     } catch (error) {
         console.error(error);
