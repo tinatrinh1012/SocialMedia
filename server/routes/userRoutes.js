@@ -12,4 +12,20 @@ userRouter.get('/', async (req, res) => {
     }
 })
 
+userRouter.post('/create', async (req, res) => {
+    try {
+        const { username, firstName, lastName } = req.body;
+        const newUser = new User({
+            username: username,
+            firstName: firstName,
+            lastName: lastName
+        });
+        await newUser.save();
+        const createdUser = await User.find({ username: username });
+        res.status(201).json(createdUser);
+    } catch (error) {
+        console.error(error);
+    }
+})
+
 export default userRouter;
