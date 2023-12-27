@@ -28,4 +28,21 @@ userRouter.post('/create', async (req, res) => {
     }
 })
 
+userRouter.put('/updateProfile', async (req, res) => {
+    try {
+        const { username, firstName, lastName } = req.body;
+        const modifiedUser = await User.findOneAndUpdate(
+            { username: username },
+            {
+                firstName: firstName,
+                lastName: lastName
+            },
+            { new: true }
+        )
+        res.status(200).json(modifiedUser);
+    } catch (error) {
+        console.error(error);
+    }
+})
+
 export default userRouter;
