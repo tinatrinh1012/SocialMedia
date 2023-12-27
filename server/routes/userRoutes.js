@@ -8,7 +8,7 @@ userRouter.get('/', async (req, res) => {
         const users = await User.find({});
         res.status(200).json(users);
     } catch (error) {
-        console.error(error);
+        res.status(400).json({ error: error.message });
     }
 })
 
@@ -32,9 +32,10 @@ userRouter.post('/create', async (req, res) => {
     }
 })
 
-userRouter.put('/updateProfile', async (req, res) => {
+userRouter.put('/:username/updateProfile', async (req, res) => {
     try {
-        const { username, firstName, lastName } = req.body;
+        const { username } = req.params;
+        const { firstName, lastName } = req.body;
         const modifiedUser = await User.findOneAndUpdate(
             { username: username },
             {
@@ -43,9 +44,13 @@ userRouter.put('/updateProfile', async (req, res) => {
             },
             { new: true }
         )
+
+        if (modifiedUser == null) {
+            res.status(406).json({error: `No document found for username ${username}`})
+        }
         res.status(200).json(modifiedUser);
     } catch (error) {
-        console.error(error);
+        res.status(400).json({ error: error.message });
     }
 })
 

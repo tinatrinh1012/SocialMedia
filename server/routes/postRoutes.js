@@ -9,7 +9,7 @@ postRouter.get('/:username', async (req, res) => {
         const posts = await Post.find({ createdBy: username });
         res.status(200).json(posts);
     } catch (error) {
-        console.error(error);
+        res.status(400).json({ error: error.message });
     }
 })
 
