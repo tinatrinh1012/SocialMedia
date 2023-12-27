@@ -5,7 +5,6 @@ const userSchema = new mongoose.Schema(
         username: String,
         firstName: String,
         lastName: String,
-        posts: [Number],
         friends: [String]
     },
     { collection: 'Users' }
