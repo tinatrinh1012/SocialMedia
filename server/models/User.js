@@ -2,7 +2,7 @@ import { mongoose } from '../database.js';
 
 const userSchema = new mongoose.Schema(
     {
-        username: String,
+        username: { type: String, unique: true },
         firstName: String,
         lastName: String,
         friends: [String]

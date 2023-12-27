@@ -24,7 +24,11 @@ userRouter.post('/create', async (req, res) => {
         const createdUser = await User.find({ username: username });
         res.status(201).json(createdUser);
     } catch (error) {
-        console.error(error);
+        if (error.code === 11000) { // duplicate username
+            res.status(405).json({ error: error.message });
+        } else {
+            res.status(400).json({ error: error.message });
+        }
     }
 })
 
