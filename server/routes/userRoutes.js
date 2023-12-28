@@ -54,4 +54,25 @@ userRouter.put('/:username/updateProfile', async (req, res) => {
     }
 })
 
+userRouter.get('/:username/friends', async (req, res) => {
+    try {
+        const { username } = req.params;
+        const pipeline = [
+            { $match: { username: username } },
+            { $lookup:
+                {
+                    from: 'Users',
+                    localField: 'friends',
+                    foreignField: 'username',
+                    as: 'aggregatedFriends'
+                }
+            }
+        ]
+        const aggregatedUsers = await User.aggregate(pipeline);
+        res.status(200).json(aggregatedUsers[0].aggregatedFriends);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+})
+
 export default userRouter;
