@@ -33,4 +33,19 @@ postRouter.post('/:username/create', async (req, res) => {
     }
 })
 
+// TODO: Post can only be updated by post owner. Validate request made by authorized user.
+postRouter.put('/:_id/update', async (req, res) => {
+    try {
+        const { _id } = req.params;
+        const { text } = req.body;
+        await Post.findOneAndUpdate(
+            { _id: _id },
+            { text: text }
+        )
+        res.status(200).json({ message: "Successfully updated post" })
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+})
+
 export default postRouter;
