@@ -32,6 +32,20 @@ userRouter.post('/create', async (req, res) => {
     }
 })
 
+userRouter.get('/:username/profile', async (req, res) => {
+    try {
+        const { username } = req.params;
+        const user = await User.findOne({ username: username });
+
+        if (user == null) {
+            res.status(406).json({ error: `No document found for username ${username}` })
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+})
+
 userRouter.put('/:username/updateProfile', async (req, res) => {
     try {
         const { username } = req.params;
