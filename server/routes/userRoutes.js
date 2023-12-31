@@ -25,7 +25,7 @@ userRouter.post('/create', async (req, res) => {
         res.status(201).json(createdUser);
     } catch (error) {
         if (error.code === 11000) { // duplicate username
-            res.status(405).json({ error: error.message });
+            res.status(400).json({ error: error.message });
         } else {
             res.status(400).json({ error: error.message });
         }
@@ -38,7 +38,7 @@ userRouter.get('/:username/profile', async (req, res) => {
         const user = await User.findOne({ username: username });
 
         if (user == null) {
-            res.status(406).json({ error: `No document found for username ${username}` })
+            throw new Error(`No document found for username ${username}`);
         }
         res.status(200).json(user);
     } catch (error) {
@@ -60,7 +60,7 @@ userRouter.put('/:username/updateProfile', async (req, res) => {
         )
 
         if (modifiedUser == null) {
-            res.status(406).json({error: `No document found for username ${username}`})
+            throw new Error(`No document found for username ${username}`);
         }
         res.status(200).json(modifiedUser);
     } catch (error) {
