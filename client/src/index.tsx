@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ErrorPage from './pages/error-page';
-import Home from './pages/home';
+import HomePage from './pages/home-page';
+import UserPage from './pages/user-page';
 
 const root = ReactDOM.createRoot(
 	document.getElementById('root') as HTMLElement
@@ -12,8 +13,12 @@ const root = ReactDOM.createRoot(
 const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <Home />,
+		element: <HomePage />,
 		errorElement: <ErrorPage />
+	},
+	{
+		path: "/user/:userId",
+		element: <UserPage />
 	}
 ])
 
