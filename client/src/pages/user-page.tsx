@@ -39,7 +39,7 @@ export default function UserPage() {
             <div>Friends</div>
             <ul>
                 {userFriends?.map(friend => (
-                    <li>{friend.firstName} {friend.lastName} ({friend.username})</li>
+                    <li key={friend._id}>{friend.firstName} {friend.lastName} ({friend.username})</li>
                 ))}
             </ul>
         </>
