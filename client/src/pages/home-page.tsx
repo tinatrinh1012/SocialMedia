@@ -27,7 +27,7 @@ export default function HomePage() {
             <ul>
                 {users?.map((user) => (
                     <li key={user._id}>
-                        <Link to={`user/${user._id}`}>{user.username} - {user.firstName} {user.lastName}</Link>
+                        <Link to={`user/${user.username}`}>{user.username} - {user.firstName} {user.lastName}</Link>
                     </li>
                 ))}
             </ul>
