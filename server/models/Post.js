@@ -3,7 +3,8 @@ import { mongoose } from '../database.js';
 const postSchema = new mongoose.Schema(
     {
         createdBy: String,
-        text: String
+        text: String,
+        likes: Number
     },
     { collection: 'Posts' }
 );
