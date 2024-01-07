@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react"
-import { User } from "../models/user";
+import { UserModel } from "../models/user";
 import { Link } from "react-router-dom";
 
 export default function HomePage() {
-    const [users, setUsers] = useState<User[]>();
+    const [users, setUsers] = useState<UserModel[]>();
 
     useEffect(() => {
         async function fetchUsers() {
             try {
                 const response = await fetch('http://localhost:3000/users');
-                const users: User[] = await response.json();
+                const users: UserModel[] = await response.json();
                 setUsers(users);
             } catch (error) {
 

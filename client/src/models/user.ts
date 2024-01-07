@@ -1,4 +1,4 @@
-export class User {
+export class UserModel {
     _id: string = '';
     username: string = '';
     firstName: string = '';
