@@ -39,7 +39,7 @@ export default function Post({ post }: PostProps) {
 
                         <h6>Comments:</h6>
                         {comments?.map(comment => (
-                            <p>- {comment.text}</p>
+                            <p key={comment._id}>- {comment.text}</p>
                         ))}
                     </div>
                 </div>

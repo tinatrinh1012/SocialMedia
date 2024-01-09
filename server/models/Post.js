@@ -3,7 +3,6 @@ import { mongoose } from '../database.js';
 
 const postSchema = new mongoose.Schema(
     {
-        _id: ObjectId,
         createdBy: String,
         text: String,
         likes: Number

@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom"
 import { UserModel } from "../models/user";
 import { PostModel } from "../models/post";
 import Post from "../components/post";
+import CreatePost from "../components/create-post";
 
 export default function UserPage() {
     const { username } = useParams();
@@ -49,6 +50,7 @@ export default function UserPage() {
     return (
         <div className="container">
             <h2>{user?.firstName} {user?.lastName} ({user?.username})</h2>
+
             <div>Friends</div>
             <ul>
                 {userFriends?.map(friend => (
@@ -56,8 +58,10 @@ export default function UserPage() {
                 ))}
             </ul>
 
+            <CreatePost username={username!}></CreatePost>
+
             {userPosts?.map(post => (
-                <Post post={ post }></Post>
+                <Post key={post._id} post={post}></Post>
             ))}
         </div>
     )
