@@ -12,6 +12,7 @@ export default function CreatePost({ username }: Props) {
     }
 
     async function handleSubmit(e: FormEvent) {
+        // TODO: find a way to put new post on top without reloading the page
         e.preventDefault();
         try {
             const response = await fetch(`http://localhost:3000/posts/${username}/create`, {
@@ -39,7 +40,6 @@ export default function CreatePost({ username }: Props) {
                         <textarea
                             className="form-control"
                             id="create-post-text"
-                            name="text"
                             rows={3}
                             placeholder="Update your status"
                             value={text}

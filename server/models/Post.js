@@ -5,9 +5,13 @@ const postSchema = new mongoose.Schema(
     {
         createdBy: String,
         text: String,
-        likes: Number
+        likes: Number,
+        createdAt: Date
     },
-    { collection: 'Posts' }
+    {
+        collection: 'Posts',
+        timestamps: true
+    }
 );
 
 const Post = mongoose.model('Post', postSchema);

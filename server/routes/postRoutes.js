@@ -6,7 +6,7 @@ const postRouter = express.Router();
 postRouter.get('/:username', async (req, res) => {
     try {
         const { username } = req.params;
-        const posts = await Post.find({ createdBy: username });
+        const posts = await Post.find({ createdBy: username }).sort({ createdAt: -1 });
         res.status(200).json(posts);
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -25,7 +25,8 @@ postRouter.post('/:username/create', async (req, res) => {
 
         await Post.create({
             createdBy: username,
-            text: text
+            createdTime: new Date(),
+            text: text,
         });
         res.status(201).json({ success: "Created post successfully"});
     } catch (error) {

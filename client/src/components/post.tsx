@@ -33,6 +33,7 @@ export default function Post({ post }: PostProps) {
                     </h5>
                     <div className="card-body">
                         <p className="card-text">{ post.text }</p>
+                        <small className="text-body-secondary">Posted on { new Date(post.createdAt).toLocaleDateString() } at { new Date(post.createdAt).toLocaleTimeString() }</small>
                     </div>
                     <div className="card-footer text-body-secondary">
                         <h6>Likes: { post.likes }</h6>
