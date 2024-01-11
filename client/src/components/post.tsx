@@ -23,6 +23,19 @@ export default function Post({ post }: PostProps) {
         fetchPostComments();
     }, [post._id])
 
+    async function deletePost() {
+        try {
+            const response = await fetch(`http://localhost:3000/posts/${post._id}/delete`, {
+                method: 'DELETE'
+            })
+
+            if (response.status === 200) {
+                window.alert('Deleted post');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     return (
         <div className="row">
@@ -33,7 +46,19 @@ export default function Post({ post }: PostProps) {
                     </h5>
                     <div className="card-body">
                         <p className="card-text">{ post.text }</p>
-                        <small className="text-body-secondary">Posted on { new Date(post.createdAt).toLocaleDateString() } at { new Date(post.createdAt).toLocaleTimeString() }</small>
+                        <small className="text-body-secondary">
+                            Posted on { new Date(post.createdAt).toLocaleDateString() } at { new Date(post.createdAt).toLocaleTimeString() }
+                        </small>
+
+                        <div>
+                            <button
+                                type="button"
+                                className="btn btn-outline-danger"
+                                onClick={deletePost}
+                            >
+                                <i className="bi bi-trash"></i>
+                            </button>
+                        </div>
                     </div>
                     <div className="card-footer text-body-secondary">
                         <h6>Likes: { post.likes }</h6>

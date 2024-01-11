@@ -49,4 +49,15 @@ postRouter.put('/:_id/update', async (req, res) => {
     }
 })
 
+// TODO: should also delete post comments
+postRouter.delete('/:_id/delete', async (req, res) => {
+    try {
+        const { _id } = req.params;
+        await Post.findOneAndDelete({ _id: _id })
+        res.status(200).json({ message: "Successfully deleted post" })
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
+})
+
 export default postRouter;
