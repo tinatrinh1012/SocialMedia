@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { PostModel } from "../models/post";
 import { CommentModel } from "../models/comment";
 
@@ -8,6 +8,8 @@ interface PostProps {
 
 export default function Post({ post }: PostProps) {
     const [comments, setComments] = useState<CommentModel[]>();
+    const [editMode, setEditMode ] = useState<boolean>(false);
+    const [editText, setEditText] = useState<string>(post.text);
 
     useEffect(() => {
         async function fetchPostComments() {
@@ -37,26 +39,88 @@ export default function Post({ post }: PostProps) {
         }
     }
 
+    function editPost() {
+        setEditMode(true);
+    }
+
+    async function savePost() {
+        setEditMode(false);
+
+        try {
+            if (editText == null || editText.length === 0) {
+                window.alert('Post text cannot be empty');
+                setEditMode(false);
+                setEditText(post.text);
+                throw new Error('Post text cannot be empty');
+            }
+
+            const response = await fetch(`http://localhost:3000/posts/${post._id}/update`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: editText }),
+            })
+
+            if (response.status === 200) {
+                window.alert('Updated post successfully')
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    function handleTextChange(e: ChangeEvent<HTMLTextAreaElement>) {
+        setEditText(e.target.value);
+    }
+
     return (
         <div className="row">
-            <div className="col-6">
+            <div className="col-8">
                 <div className="card">
                     <h5 className="card-header">
                         { post.createdBy }
                     </h5>
                     <div className="card-body">
-                        <p className="card-text">{ post.text }</p>
+                        { editMode ? (
+                            <textarea
+                                className="form-control"
+                                rows={3}
+                                value={editText}
+                                onChange={handleTextChange}></textarea>
+                        ) : (
+                            <p className="card-text">{ editText }</p>
+                        )}
+
                         <small className="text-body-secondary">
                             Posted on { new Date(post.createdAt).toLocaleDateString() } at { new Date(post.createdAt).toLocaleTimeString() }
                         </small>
 
                         <div>
+                            { editMode ? (
+                                <button
+                                    type="button"
+                                    className="btn btn-outline-primary me-2"
+                                    onClick={savePost}
+                                >
+                                    Save <i className="bi bi-check-lg"></i>
+                                </button>
+                            ) : (
+                                <button
+                                    type="button"
+                                    className="btn btn-outline-primary me-2"
+                                    onClick={editPost}
+                                >
+                                    Edit <i className="bi bi-pencil"></i>
+                                </button>
+                            )}
+
                             <button
                                 type="button"
                                 className="btn btn-outline-danger"
                                 onClick={deletePost}
                             >
-                                <i className="bi bi-trash"></i>
+                                Delete <i className="bi bi-trash"></i>
                             </button>
                         </div>
                     </div>
