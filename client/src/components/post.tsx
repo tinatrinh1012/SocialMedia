@@ -4,9 +4,10 @@ import { CommentModel } from "../models/comment";
 
 interface PostProps {
     post: PostModel;
+    onPostDelete: (_id: string) => void
 }
 
-export default function Post({ post }: PostProps) {
+export default function Post({ post, onPostDelete }: PostProps) {
     const [comments, setComments] = useState<CommentModel[]>();
     const [editMode, setEditMode ] = useState<boolean>(false);
     const [editText, setEditText] = useState<string>(post.text);
@@ -25,6 +26,7 @@ export default function Post({ post }: PostProps) {
         fetchPostComments();
     }, [post._id])
 
+    // TODO: add delete confirmation popup dialog
     async function deletePost() {
         try {
             const response = await fetch(`http://localhost:3000/posts/${post._id}/delete`, {
@@ -33,6 +35,7 @@ export default function Post({ post }: PostProps) {
 
             if (response.status === 200) {
                 window.alert('Deleted post');
+                onPostDelete(post._id);
             }
         } catch (error) {
             console.error(error);

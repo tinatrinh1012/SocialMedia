@@ -47,6 +47,15 @@ export default function UserPage() {
         fetchUserPosts();
     }, [username])
 
+    function onPostDelete(_id: string) {
+        if (userPosts && userPosts.length > 0) {
+            let posts = userPosts.filter(post => post._id !== _id);
+            setUserPosts(posts);
+        } else {
+            console.error("Unable to remove post");
+        }
+    }
+
     return (
         <div className="container">
             <h2>{user?.firstName} {user?.lastName} ({user?.username})</h2>
@@ -61,7 +70,7 @@ export default function UserPage() {
             <CreatePost username={username!}></CreatePost>
 
             {userPosts?.map(post => (
-                <Post key={post._id} post={post}></Post>
+                <Post key={post._id} post={post} onPostDelete={onPostDelete}></Post>
             ))}
         </div>
     )
