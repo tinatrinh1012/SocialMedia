@@ -95,10 +95,6 @@ export default function Post({ post, onPostDelete }: PostProps) {
                             <p className="card-text">{ editText }</p>
                         )}
 
-                        <small className="text-body-secondary">
-                            Posted on { new Date(post.createdAt).toLocaleDateString() } at { new Date(post.createdAt).toLocaleTimeString() }
-                        </small>
-
                         <div>
                             { editMode ? (
                                 <button
@@ -126,6 +122,10 @@ export default function Post({ post, onPostDelete }: PostProps) {
                                 Delete <i className="bi bi-trash"></i>
                             </button>
                         </div>
+
+                        <small className="text-body-secondary">
+                            Created on { new Date(post.createdAt).toLocaleDateString() } at { new Date(post.createdAt).toLocaleTimeString() }
+                        </small>
                     </div>
                     <div className="card-footer text-body-secondary">
                         <h6>Likes: { post.likes }</h6>

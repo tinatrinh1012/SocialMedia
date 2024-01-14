@@ -1,10 +1,12 @@
 import { ChangeEvent, FormEvent, useState } from "react"
+import { PostModel } from "../models/post";
 
 interface Props {
     username: string;
+    onPostCreate: (createdPost: PostModel) => void
 }
 
-export default function CreatePost({ username }: Props) {
+export default function CreatePost({ username, onPostCreate }: Props) {
     const [text, setText] = useState<string>();
 
     function handleTextChange(e: ChangeEvent<HTMLTextAreaElement>) {
@@ -24,7 +26,9 @@ export default function CreatePost({ username }: Props) {
             })
 
             if (response.status === 201) {
-                console.log('Created post successfully')
+                const createdPost = await response.json();
+                onPostCreate(createdPost);
+                setText('');
             }
         } catch (error) {
             console.error(error);
@@ -33,7 +37,7 @@ export default function CreatePost({ username }: Props) {
 
     return (
         <div className="mb-3">
-            <form onSubmit={handleSubmit}>
+            <form>
                 <label className="form-label" htmlFor="create-post-text">Create a post</label>
                 <div className="row mb-2">
                     <div className="col-6">
@@ -48,7 +52,7 @@ export default function CreatePost({ username }: Props) {
                 </div>
                 <div className="row">
                     <div className="col-6">
-                        <button className="btn btn-primary">Post</button>
+                        <button className="btn btn-primary" onClick={handleSubmit}>Post</button>
                     </div>
                 </div>
             </form>

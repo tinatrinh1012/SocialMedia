@@ -47,6 +47,14 @@ export default function UserPage() {
         fetchUserPosts();
     }, [username])
 
+    function onPostCreate(createdPost: PostModel) {
+        if (userPosts) {
+            setUserPosts([createdPost, ...userPosts]);
+        } else {
+            setUserPosts([createdPost]);
+        }
+    }
+
     function onPostDelete(_id: string) {
         if (userPosts && userPosts.length > 0) {
             let posts = userPosts.filter(post => post._id !== _id);
@@ -67,7 +75,7 @@ export default function UserPage() {
                 ))}
             </ul>
 
-            <CreatePost username={username!}></CreatePost>
+            <CreatePost username={username!} onPostCreate={onPostCreate}></CreatePost>
 
             {userPosts?.map(post => (
                 <Post key={post._id} post={post} onPostDelete={onPostDelete}></Post>
