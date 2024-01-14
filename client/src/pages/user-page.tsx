@@ -55,6 +55,23 @@ export default function UserPage() {
         }
     }
 
+    async function onPostUpdate(_id: string) {
+        try {
+            const response = await fetch(`http://localhost:3000/posts?_id=${_id}`);
+            const updatedPost = await response.json();
+
+            if (userPosts) {
+                const indexToReplace = userPosts.findIndex(post => post._id === _id);
+                if (indexToReplace !== -1) {
+                    let updatedUserPosts = [...userPosts.slice(0, indexToReplace), updatedPost, ...userPosts.slice(indexToReplace + 1)];
+                    setUserPosts(updatedUserPosts);
+                }
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     function onPostDelete(_id: string) {
         if (userPosts && userPosts.length > 0) {
             let posts = userPosts.filter(post => post._id !== _id);
@@ -78,7 +95,7 @@ export default function UserPage() {
             <CreatePost username={username!} onPostCreate={onPostCreate}></CreatePost>
 
             {userPosts?.map(post => (
-                <Post key={post._id} post={post} onPostDelete={onPostDelete}></Post>
+                <Post key={post._id} post={post} onPostDelete={onPostDelete} onPostUpdate={onPostUpdate}></Post>
             ))}
         </div>
     )

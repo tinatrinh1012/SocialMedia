@@ -1,13 +1,14 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { PostModel } from "../models/post";
 import { CommentModel } from "../models/comment";
 
 interface PostProps {
     post: PostModel;
-    onPostDelete: (_id: string) => void
+    onPostDelete: (_id: string) => void;
+    onPostUpdate: (_id: string) => void;
 }
 
-export default function Post({ post, onPostDelete }: PostProps) {
+export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
     const [comments, setComments] = useState<CommentModel[]>();
     const [editMode, setEditMode ] = useState<boolean>(false);
     const [editText, setEditText] = useState<string>(post.text);
@@ -46,7 +47,8 @@ export default function Post({ post, onPostDelete }: PostProps) {
         setEditMode(true);
     }
 
-    async function savePost() {
+    async function savePost(e: FormEvent) {
+        e.preventDefault();
         setEditMode(false);
 
         try {
@@ -66,7 +68,7 @@ export default function Post({ post, onPostDelete }: PostProps) {
             })
 
             if (response.status === 200) {
-                window.alert('Updated post successfully')
+                onPostUpdate(post._id);
             }
         } catch (error) {
             console.error(error);

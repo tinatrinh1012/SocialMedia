@@ -13,6 +13,16 @@ postRouter.get('/:username', async (req, res) => {
     }
 })
 
+postRouter.get('/', async (req, res) => {
+    try {
+        const { _id } = req.query;
+        const post = await Post.findById(_id);
+        res.status(200).json(post);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+})
+
 // TODO: identify and validate username through authentication
 postRouter.post('/:username/create', async (req, res) => {
     try {
@@ -23,12 +33,12 @@ postRouter.post('/:username/create', async (req, res) => {
             throw new Error("Cannot create post with empty content");
         }
 
-        await Post.create({
+        const createdPost = await Post.create({
             createdBy: username,
             createdTime: new Date(),
             text: text,
         });
-        res.status(201).json({ success: "Created post successfully"});
+        res.status(201).json(createdPost);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -39,11 +49,11 @@ postRouter.put('/:_id/update', async (req, res) => {
     try {
         const { _id } = req.params;
         const { text } = req.body;
-        await Post.findOneAndUpdate(
+        const updatedPost = await Post.findOneAndUpdate(
             { _id: _id },
             { text: text }
         )
-        res.status(200).json({ message: "Successfully updated post" })
+        res.status(200).json(updatedPost);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
