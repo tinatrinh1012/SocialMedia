@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import postRouter from './routes/postRoutes.js';
 import cors from 'cors';
 import commentRouter from './routes/commentRoutes.js';
+import authRouter from './routes/authRoutes.js';
 
 const app = express();
 app.use(bodyParser.json());
@@ -19,6 +20,7 @@ const port = process.env.PORT;
 app.use('/users', userRouter);
 app.use('/posts', postRouter);
 app.use('/comments', commentRouter);
+app.use('/auth', authRouter);
 
 // Start the server
 app.listen(port, () => {
