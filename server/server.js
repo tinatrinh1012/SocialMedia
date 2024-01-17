@@ -7,6 +7,8 @@ import postRouter from './routes/postRoutes.js';
 import cors from 'cors';
 import commentRouter from './routes/commentRoutes.js';
 import authRouter from './routes/authRoutes.js';
+import { passport } from './passport.js';
+import session from 'express-session';
 
 const app = express();
 app.use(bodyParser.json());
@@ -15,6 +17,15 @@ app.use(cors());
 // Load environment variables
 dotenv.config({ path: "./config.env" });
 const port = process.env.PORT;
+
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+}))
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Set up routes
 app.use('/users', userRouter);
