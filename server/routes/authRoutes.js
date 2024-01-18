@@ -3,15 +3,18 @@ import { passport } from '../passport.js';
 
 const authRouter = express.Router();
 
-authRouter.post('/login', passport.authenticate('local',
-    {
-        successRedirect: '/',
-        failureRedirect: '/login'
-    },
-    (err, user) => {
+authRouter.post('/login', (req, res) => {
+    passport.authenticate('local', (err, user, info, status) => {
         console.log(user);
-    }
-))
+        if (err) {
+            res.status(400).json(err);
+        }
+        if (!user) {
+            res.status(400).json({ error: 'Invalid username or password' })
+        }
+        res.status(200).json({ success: 'User authenticated' });
+    })(req, res);
+})
 
 export default authRouter;
 
