@@ -1,5 +1,7 @@
 import express from 'express';
 import { passport } from '../passport.js';
+import crypto from 'crypto';
+import User from '../models/User.js';
 
 const authRouter = express.Router();
 
@@ -16,15 +18,34 @@ authRouter.post('/login', (req, res) => {
     })(req, res);
 })
 
-export default authRouter;
+authRouter.post('/logout', (req, res, next) => {
+    req.logout((err) => {
+        if (err) {
+            return next(err);
+        }
+        res.status(200).json({ success: 'Logged out successful' });
+    })
+})
 
-// const salt = crypto.randomBytes(16);
-// const hashed_password = crypto.pbkdf2Sync('letmein', salt, 310000, 32, 'sha256');
-// const username = 'alice';
-// User.create({
-//     username: username,
-//     firstName: 'Alice',
-//     lastName: 'Johnson',
-//     hashed_password: hashed_password,
-//     salt: salt
-// })
+authRouter.post('/signup', async (req, res, next) => {
+    try {
+        const salt = crypto.randomBytes(16);
+        const hashed_password = crypto.pbkdf2Sync(req.body.password, salt, 310000, 32, 'sha256');
+        await User.create({
+            username: req.body.username,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            hashed_password: hashed_password,
+            salt: salt
+        })
+        const user = { username: req.body.username };
+        req.login(user, (err) => {
+            if (err) { return next(err); }
+            res.status(200).json({ message: 'New user sign up successful' });
+        })
+    } catch (error) {
+        res.status(400).json({ message: 'Errors signing up new users' });
+    }
+})
+
+export default authRouter;
