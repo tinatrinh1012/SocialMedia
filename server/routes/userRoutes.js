@@ -33,7 +33,9 @@ userRouter.post('/create', async (req, res) => {
 })
 
 userRouter.get('/:username/profile', async (req, res) => {
+    console.log('profile route');
     try {
+        console.log(req.user);
         const { username } = req.params;
         const user = await User.findOne({ username: username });
 

@@ -28,10 +28,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Set up routes
+app.use('/auth', authRouter);
 app.use('/users', userRouter);
 app.use('/posts', postRouter);
 app.use('/comments', commentRouter);
-app.use('/auth', authRouter);
 
 // Start the server
 app.listen(port, () => {
