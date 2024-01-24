@@ -33,9 +33,12 @@ userRouter.post('/create', async (req, res) => {
 })
 
 userRouter.get('/:username/profile', async (req, res) => {
-    console.log('profile route');
+    console.log('/profile');
     try {
         console.log(req.user);
+        if (!req.user) {
+            throw new Error('Not authenticated');
+        }
         const { username } = req.params;
         const user = await User.findOne({ username: username });
 

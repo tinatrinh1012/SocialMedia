@@ -14,7 +14,9 @@ export default function UserPage() {
     useEffect(() => {
         async function fetchUser() {
             try {
-                const response = await fetch(`http://localhost:3000/users/${username}/profile`);
+                const response = await fetch(`http://localhost:3000/users/${username}/profile`, {
+                    credentials: 'include'
+                });
                 const user = await response.json();
                 setUser(user);
             } catch (error) {

@@ -12,7 +12,10 @@ import session from 'express-session';
 
 const app = express();
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({
+    credentials: true,
+    origin: 'http://localhost:3001'
+}));
 
 // Load environment variables
 dotenv.config({ path: "./config.env" });

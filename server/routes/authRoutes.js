@@ -6,9 +6,9 @@ import User from '../models/User.js';
 const authRouter = express.Router();
 
 authRouter.post('/login', (req, res, next) => {
-    console.log('/login route');
+    console.log('/login');
     passport.authenticate('local', (err, user, info, status) => {
-        console.log(user);
+        console.log('User', user);
         if (err) {
             res.status(400).json(err);
         }
@@ -17,10 +17,10 @@ authRouter.post('/login', (req, res, next) => {
         }
         req.login(user, (err) => {
             if (err) {
-                return res.status(400).json({ error: 'Login failed' });
+                res.status(400).json({ error: 'Login failed' });
             }
-
-            return res.status(200).json({ success: 'User authenticated' });
+            console.log('Session', req.session);
+            res.status(200).json({ success: 'User authenticated' });
         });
     })(req, res, next);
 })
