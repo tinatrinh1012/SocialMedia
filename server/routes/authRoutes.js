@@ -5,10 +5,9 @@ import User from '../models/User.js';
 
 const authRouter = express.Router();
 
-authRouter.post('/login', (req, res, next) => {
+authRouter.post('/login', (req, res) => {
     console.log('/login');
     passport.authenticate('local', (err, user, info, status) => {
-        console.log('User', user);
         if (err) {
             res.status(400).json(err);
         }
@@ -19,22 +18,22 @@ authRouter.post('/login', (req, res, next) => {
             if (err) {
                 res.status(400).json({ error: 'Login failed' });
             }
-            console.log('Session', req.session);
             res.status(200).json({ success: 'User authenticated' });
         });
-    })(req, res, next);
+    })(req, res);
 })
 
-authRouter.post('/logout', (req, res, next) => {
+authRouter.post('/logout', (req, res) => {
+    console.log('/logout');
     req.logout((err) => {
         if (err) {
-            return next(err);
+            res.status(400).json(err);
         }
         res.status(200).json({ success: 'Logged out successful' });
     })
 })
 
-authRouter.post('/signup', async (req, res, next) => {
+authRouter.post('/signup', async (req, res) => {
     try {
         const salt = crypto.randomBytes(16);
         const hashed_password = crypto.pbkdf2Sync(req.body.password, salt, 310000, 32, 'sha256');
@@ -47,11 +46,13 @@ authRouter.post('/signup', async (req, res, next) => {
         })
         const user = { username: req.body.username };
         req.login(user, (err) => {
-            if (err) { return next(err); }
+            if (err) {
+                throw Error('Error loggin in')
+            }
             res.status(200).json({ message: 'New user sign up successful' });
         })
     } catch (error) {
-        res.status(400).json({ message: 'Errors signing up new users' });
+        res.status(400).json(error);
     }
 })
 

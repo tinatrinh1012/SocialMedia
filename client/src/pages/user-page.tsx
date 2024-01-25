@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { UserModel } from "../models/user";
 import { PostModel } from "../models/post";
 import Post from "../components/post";
@@ -10,6 +10,7 @@ export default function UserPage() {
     const [user, setUser] = useState<UserModel>();
     const [userFriends, setUserFriends] = useState<UserModel[]>();
     const [userPosts, setUserPosts] = useState<PostModel[]>();
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchUser() {
@@ -89,13 +90,14 @@ export default function UserPage() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                }
+                },
+                credentials: 'include'
             })
 
             if (result.status === 200) {
-                window.alert('Logged out');
+                navigate('/login');
             } else {
-                window.alert('Unable to log out');
+                throw Error('Error logging out');
             }
         } catch (error) {
             console.error(error);

@@ -24,18 +24,13 @@ userRouter.post('/create', async (req, res) => {
         const createdUser = await User.find({ username: username });
         res.status(201).json(createdUser);
     } catch (error) {
-        if (error.code === 11000) { // duplicate username
-            res.status(400).json({ error: error.message });
-        } else {
-            res.status(400).json({ error: error.message });
-        }
+        res.status(400).json(error);
     }
 })
 
 userRouter.get('/:username/profile', async (req, res) => {
     console.log('/profile');
     try {
-        console.log(req.user);
         if (!req.user) {
             throw new Error('Not authenticated');
         }
