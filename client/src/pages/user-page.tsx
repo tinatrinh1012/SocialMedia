@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import { UserModel } from "../models/user";
 import { PostModel } from "../models/post";
@@ -84,31 +84,11 @@ export default function UserPage() {
         }
     }
 
-    async function logout(e: FormEvent) {
-        try {
-            const result = await fetch(`http://localhost:3000/auth/logout`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include'
-            })
 
-            if (result.status === 200) {
-                navigate('/login');
-            } else {
-                throw Error('Error logging out');
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    }
 
     return (
         <div className="container">
             <h2>{user?.firstName} {user?.lastName} ({user?.username})</h2>
-
-            <button className="btn btn-primary" onClick={logout}>Log out</button>
 
             <div>Friends</div>
             <ul>
