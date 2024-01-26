@@ -28,6 +28,7 @@ userRouter.post('/create', async (req, res) => {
     }
 })
 
+// TODO: verify session user match username in url
 userRouter.get('/:username/profile', async (req, res) => {
     console.log('/profile');
     try {

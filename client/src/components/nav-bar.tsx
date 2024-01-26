@@ -36,7 +36,13 @@ export default function NavBar() {
                                 <a className="nav-link" href="/">Home</a>
                             </li>
                             <li className="nav-item">
+                                <a className="nav-link" href="/login">Log in</a>
+                            </li>
+                            <li className="nav-item">
                                 <button className="nav-link" onClick={logout}>Log out</button>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" href="/signup">Sign up</a>
                             </li>
                         </ul>
                     </div>

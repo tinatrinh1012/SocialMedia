@@ -1,27 +1,33 @@
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function LoginPage() {
+export default function SignUpPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+
     const navigate = useNavigate();
 
-    async function login(e: FormEvent) {
+    async function signup(e: FormEvent) {
         e.preventDefault();
         try {
-            const result = await fetch(`http://localhost:3000/auth/login`, {
+            const result = await fetch(`http://localhost:3000/auth/signup`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
-                body: JSON.stringify({ username: username, password: password }),
+                body: JSON.stringify({
+                    username: username,
+                    password: password,
+                    firstName: firstName,
+                    lastName: lastName
+                }),
             })
 
             if (result.status === 200) {
                 navigate(`/user/${username}`);
-            } else {
-                window.alert('Unable to log in');
             }
         } catch (error) {
             console.error(error);
@@ -30,8 +36,8 @@ export default function LoginPage() {
 
     return (
         <div className="row">
-            <h1>Log In</h1>
-            <form className="col-sm-12 col-lg-10" onSubmit={login}>
+            <h1>Sign up</h1>
+            <form className="col-sm-12 col-lg-10" onSubmit={signup}>
                 <div className="form-group">
                     <label htmlFor="username">Username</label>
                     <input
@@ -39,6 +45,22 @@ export default function LoginPage() {
                         id="username"
                         placeholder="Enter username"
                         onChange={(e) => {setUsername(e.target.value)}}></input>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="firstName">First Name</label>
+                    <input
+                        className="form-control"
+                        id="firstName"
+                        placeholder="Enter first name"
+                        onChange={(e) => {setFirstName(e.target.value)}}></input>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="lastName">Last name</label>
+                    <input
+                        className="form-control"
+                        id="lastName"
+                        placeholder="Enter last name"
+                        onChange={(e) => {setLastName(e.target.value)}}></input>
                 </div>
                 <div className="form-group">
                     <label htmlFor="password">Password</label>
@@ -49,7 +71,7 @@ export default function LoginPage() {
                         placeholder="Password"
                         onChange={(e) => {setPassword(e.target.value)}}></input>
                 </div>
-                <button type="submit" className="btn btn-primary">Log in</button>
+                <button type="submit" className="btn btn-primary">Sign Up</button>
             </form>
         </div>
     )

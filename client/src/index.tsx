@@ -12,6 +12,8 @@ const root = ReactDOM.createRoot(
 root.render(
 	<React.StrictMode>
 		<NavBar></NavBar>
-		<RouterProvider router={Router}></RouterProvider>
+		<div className="container">
+			<RouterProvider router={Router}></RouterProvider>
+		</div>
 	</React.StrictMode>
 );

@@ -3,6 +3,7 @@ import LocalStrategy from 'passport-local';
 import crypto from 'crypto';
 import User from './models/User.js';
 
+// TODO: understand password verification process
 passport.use(new LocalStrategy(async (username, password, done) => {
     try {
         const user = await User.findOne({ username: username });
