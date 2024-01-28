@@ -18,10 +18,17 @@ export default function UserPage() {
                 const response = await fetch(`http://localhost:3000/users/${username}/profile`, {
                     credentials: 'include'
                 });
+                if (response.status === 400) {
+                    throw Error('Not authenticated');
+                }
                 const user = await response.json();
                 setUser(user);
+
+                fetchUserFriends();
+                fetchUserPosts();
             } catch (error) {
-                console.error(error);
+                navigate('/login');
+                window.alert(`You're not authenticated. Please log in with username ${username}`);
             }
         }
 
@@ -46,9 +53,7 @@ export default function UserPage() {
         }
 
         fetchUser();
-        fetchUserFriends();
-        fetchUserPosts();
-    }, [username])
+    }, [navigate, username])
 
     function onPostCreate(createdPost: PostModel) {
         if (userPosts) {

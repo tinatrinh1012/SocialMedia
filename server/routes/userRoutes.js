@@ -28,19 +28,19 @@ userRouter.post('/create', async (req, res) => {
     }
 })
 
-// TODO: verify session user match username in url
 userRouter.get('/:username/profile', async (req, res) => {
     console.log('/profile');
     try {
-        if (!req.user) {
+        const { username } = req.params;
+        if (!req.user || req.user.username != username) {
             throw new Error('Not authenticated');
         }
-        const { username } = req.params;
-        const user = await User.findOne({ username: username });
 
+        const user = await User.findOne({ username: username });
         if (user == null) {
             throw new Error(`No document found for username ${username}`);
         }
+
         res.status(200).json(user);
     } catch (error) {
         res.status(400).json({ error: error.message });

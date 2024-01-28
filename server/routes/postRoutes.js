@@ -23,11 +23,14 @@ postRouter.get('/', async (req, res) => {
     }
 })
 
-// TODO: identify and validate username through authentication
 postRouter.post('/:username/create', async (req, res) => {
     try {
         const { username } = req.params;
         const { text } = req.body;
+
+        if (!req.user || req.user.username != username) {
+            throw new Error('Not authenticated');
+        }
 
         if (text == null || text.length == 0) {
             throw new Error("Cannot create post with empty content");
@@ -40,7 +43,7 @@ postRouter.post('/:username/create', async (req, res) => {
         });
         res.status(201).json(createdPost);
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        res.status(400).json(error);
     }
 })
 
