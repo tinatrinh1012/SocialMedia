@@ -29,12 +29,10 @@ passport.use(new LocalStrategy(async (username, password, done) => {
 }))
 
 passport.serializeUser((user, done) => {
-    console.log('serialize user...');
     done(null, user.username);
 })
 
 passport.deserializeUser(async (username, done) => {
-    console.log('deserialize user...');
     try {
         const user = await User.findOne({ username: username });
         done(null, user);

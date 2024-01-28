@@ -49,7 +49,6 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
 
     async function savePost(e: FormEvent) {
         e.preventDefault();
-        setEditMode(false);
 
         try {
             if (editText == null || editText.length === 0) {
@@ -64,15 +63,20 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
                 body: JSON.stringify({ text: editText }),
             })
 
             if (response.status === 200) {
                 onPostUpdate(post._id);
+            } else {
+                setEditText(post.text);
+                window.alert('Unable to update post');
             }
         } catch (error) {
             console.error(error);
         }
+        setEditMode(false);
     }
 
     function handleTextChange(e: ChangeEvent<HTMLTextAreaElement>) {
