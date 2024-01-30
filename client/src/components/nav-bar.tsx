@@ -1,7 +1,20 @@
-import { FormEvent } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Router from "../routes";
+import AuthService from "../services/authService";
+import { UserModel } from "../models/user";
 
 export default function NavBar() {
+    const [user, setUser] = useState<UserModel>();
+
+    useEffect(() => {
+        async function setCurrentUser() {
+            const user = await AuthService.getLoggedInUser();
+            setUser(user);
+        }
+
+        setCurrentUser();
+    }, [])
+
     async function logout(e: FormEvent) {
         try {
             const result = await fetch(`http://localhost:3000/auth/logout`, {
@@ -47,6 +60,7 @@ export default function NavBar() {
                         </ul>
                     </div>
                 </div>
+                <h1 className="navbar-brand mb-0">{ user?.username }</h1>
             </nav>
         </div>
     )

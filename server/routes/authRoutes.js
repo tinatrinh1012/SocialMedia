@@ -56,4 +56,12 @@ authRouter.post('/signup', async (req, res) => {
     }
 })
 
+authRouter.get('/current-user', (req, res) => {
+    if (req.user) {
+        res.status(200).json(req.user);
+    } else {
+        res.status(400).json({ error: 'Not authenticated' })
+    }
+})
+
 export default authRouter;

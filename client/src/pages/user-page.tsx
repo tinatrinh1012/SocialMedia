@@ -15,12 +15,7 @@ export default function UserPage() {
     useEffect(() => {
         async function fetchUser() {
             try {
-                const response = await fetch(`http://localhost:3000/users/${username}/profile`, {
-                    credentials: 'include'
-                });
-                if (response.status === 400) {
-                    throw Error('Not authenticated');
-                }
+                const response = await fetch(`http://localhost:3000/users/${username}/profile`);
                 const user = await response.json();
                 setUser(user);
 

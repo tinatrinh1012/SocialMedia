@@ -32,9 +32,6 @@ userRouter.get('/:username/profile', async (req, res) => {
     console.log('/profile');
     try {
         const { username } = req.params;
-        if (!req.user || req.user.username != username) {
-            throw new Error('Not authenticated');
-        }
 
         const user = await User.findOne({ username: username });
         if (user == null) {
