@@ -23,6 +23,8 @@ const Router = createBrowserRouter([
 		path: "/user/:username",
 		element: <UserPage />
 	}
+	// TODO: wrap nav bar in router using outlet,
+	// once nav bar stops reloading every time, then only need to request current logged in user once
 ])
 
 export default Router;

@@ -10,14 +10,16 @@ export default function UserPage() {
     const [user, setUser] = useState<UserModel>();
     const [userFriends, setUserFriends] = useState<UserModel[]>();
     const [userPosts, setUserPosts] = useState<PostModel[]>();
+    const [isCurrentUser, setIsCurrentUser] = useState<boolean>(false);
     const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchUser() {
             try {
-                const response = await fetch(`http://localhost:3000/users/${username}/profile`);
-                const user = await response.json();
-                setUser(user);
+                const response = await fetch(`http://localhost:3000/users/${username}/profile`, {credentials: 'include'});
+                const json = await response.json();
+                setUser(json.user);
+                setIsCurrentUser(json.isCurrentUser);
 
                 fetchUserFriends();
                 fetchUserPosts();
@@ -97,10 +99,18 @@ export default function UserPage() {
                 ))}
             </ul>
 
-            <CreatePost username={username!} onPostCreate={onPostCreate}></CreatePost>
+            {isCurrentUser ? (
+                <CreatePost username={username!} onPostCreate={onPostCreate}></CreatePost>
+            ) : <></>}
+
 
             {userPosts?.map(post => (
-                <Post key={post._id} post={post} onPostDelete={onPostDelete} onPostUpdate={onPostUpdate}></Post>
+                <Post
+                    key={post._id}
+                    post={post}
+                    onPostDelete={onPostDelete}
+                    onPostUpdate={onPostUpdate}
+                    allowEdit={isCurrentUser}></Post>
             ))}
         </div>
     )

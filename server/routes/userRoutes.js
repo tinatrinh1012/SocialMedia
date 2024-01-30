@@ -37,8 +37,9 @@ userRouter.get('/:username/profile', async (req, res) => {
         if (user == null) {
             throw new Error(`No document found for username ${username}`);
         }
-
-        res.status(200).json(user);
+        console.log(user);
+        console.log(req.user);
+        res.status(200).json({user, isCurrentUser: req.user.username === user.username});
     } catch (error) {
         res.status(400).json({ error: error.message });
     }

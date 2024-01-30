@@ -6,9 +6,10 @@ interface PostProps {
     post: PostModel;
     onPostDelete: (_id: string) => void;
     onPostUpdate: (_id: string) => void;
+    allowEdit: boolean;
 }
 
-export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
+export default function Post({ post, onPostDelete, onPostUpdate, allowEdit }: PostProps) {
     const [comments, setComments] = useState<CommentModel[]>();
     const [editMode, setEditMode ] = useState<boolean>(false);
     const [editText, setEditText] = useState<string>(post.text);
@@ -84,7 +85,7 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
     }
 
     return (
-        <div className="row">
+        <div className="row mb-4">
             <div className="col-8">
                 <div className="card">
                     <h5 className="card-header">
@@ -101,33 +102,35 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
                             <p className="card-text">{ editText }</p>
                         )}
 
-                        <div>
-                            { editMode ? (
-                                <button
-                                    type="button"
-                                    className="btn btn-outline-primary me-2"
-                                    onClick={savePost}
-                                >
-                                    Save <i className="bi bi-check-lg"></i>
-                                </button>
-                            ) : (
-                                <button
-                                    type="button"
-                                    className="btn btn-outline-primary me-2"
-                                    onClick={editPost}
-                                >
-                                    Edit <i className="bi bi-pencil"></i>
-                                </button>
-                            )}
+                        {allowEdit ? (
+                            <div>
+                                { editMode ? (
+                                    <button
+                                        type="button"
+                                        className="btn btn-outline-primary me-2"
+                                        onClick={savePost}
+                                    >
+                                        Save <i className="bi bi-check-lg"></i>
+                                    </button>
+                                ) : (
+                                    <button
+                                        type="button"
+                                        className="btn btn-outline-primary me-2"
+                                        onClick={editPost}
+                                    >
+                                        Edit <i className="bi bi-pencil"></i>
+                                    </button>
+                                )}
 
-                            <button
-                                type="button"
-                                className="btn btn-outline-danger"
-                                onClick={deletePost}
-                            >
-                                Delete <i className="bi bi-trash"></i>
-                            </button>
-                        </div>
+                                <button
+                                    type="button"
+                                    className="btn btn-outline-danger"
+                                    onClick={deletePost}
+                                >
+                                    Delete <i className="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        ) : <></>}
 
                         <small className="text-body-secondary">
                             Created on { new Date(post.createdAt).toLocaleDateString() } at { new Date(post.createdAt).toLocaleTimeString() }
