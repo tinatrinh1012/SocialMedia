@@ -1,20 +1,25 @@
 import { FormEvent, useEffect, useState } from "react";
-import Router from "../routes";
-import AuthService from "../services/authService";
 import { UserModel } from "../models/user";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function NavBar() {
-    const [user, setUser] = useState<UserModel>();
+    const [user, setUser] = useState<UserModel | null>();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        async function setCurrentUser() {
-            const user = await AuthService.getLoggedInUser();
-            setUser(user);
+        async function getLoggedInUser() {
+            const response = await fetch('http://localhost:3000/auth/current-user', { credentials: 'include' });
+            if (response.status === 200) {
+                const user = await response.json();
+                setUser(user);
+            } else {
+                setUser(null);
+                navigate('/login');
+            }
         }
 
-        setCurrentUser();
-    }, [])
+        getLoggedInUser();
+    }, [navigate])
 
     async function logout(e: FormEvent) {
         try {
@@ -27,7 +32,8 @@ export default function NavBar() {
             })
 
             if (result.status === 200) {
-                Router.navigate('/login');
+                setUser(null);
+                navigate('/login');
             } else {
                 throw Error('Error logging out');
             }
@@ -49,15 +55,20 @@ export default function NavBar() {
                             <li className="nav-item">
                                 <Link to={'/'} className="nav-link">Home</Link>
                             </li>
-                            <li className="nav-item">
-                                <Link to={"/login"} className="nav-link">Log in</Link>
-                            </li>
-                            <li className="nav-item">
-                                <button className="nav-link" onClick={logout}>Log out</button>
-                            </li>
-                            <li className="nav-item">
-                                <Link to={"/signup"} className="nav-link">Sign up</Link>
-                            </li>
+                            {user ? (
+                                <li className="nav-item">
+                                    <button className="nav-link" onClick={logout}>Log out</button>
+                                </li>
+                            ) : (
+                                <>
+                                    <li className="nav-item">
+                                        <Link to={"/login"} className="nav-link">Log in</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link to={"/signup"} className="nav-link">Sign up</Link>
+                                    </li>
+                                </>
+                            )}
                         </ul>
                     </div>
                 </div>
