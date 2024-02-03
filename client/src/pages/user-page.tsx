@@ -90,7 +90,7 @@ export default function UserPage() {
 
     return (
         <div className="container">
-            <h2>{user?.firstName} {user?.lastName} ({user?.username})</h2>
+            <h2>{user?.firstName} {user?.lastName}</h2>
 
             <div>Friends</div>
             <ul>

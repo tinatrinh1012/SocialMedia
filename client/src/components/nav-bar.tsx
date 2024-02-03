@@ -52,13 +52,15 @@ export default function NavBar() {
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav">
-                            <li className="nav-item">
-                                <Link to={'/'} className="nav-link">Home</Link>
-                            </li>
                             {user ? (
-                                <li className="nav-item">
-                                    <button className="nav-link" onClick={logout}>Log out</button>
-                                </li>
+                                <>
+                                    <li className="nav-item">
+                                        <Link to={'/'} className="nav-link">Home</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <button className="nav-link" onClick={logout}>Log out</button>
+                                    </li>
+                                </>
                             ) : (
                                 <>
                                     <li className="nav-item">
