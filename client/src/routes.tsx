@@ -8,26 +8,33 @@ import App from "./App";
 
 const Router = createBrowserRouter([
 	{
-		path: "/",
+		path: "",
 		element: <App/>,
 		errorElement: <ErrorPage />,
 		children: [
 			{
-				path: "/",
+				path: "",
 				element: <HomePage />,
 
 			},
 			{
-				path: "/login",
+				path: "user/:username",
+				element: <UserPage />
+			}
+		]
+	},
+	{
+		path: "new-user",
+		element: <App/>,
+		errorElement: <ErrorPage />,
+		children: [
+			{
+				path: "login",
 				element: <LoginPage />
 			},
 			{
-				path: "/signup",
+				path: "signup",
 				element: <SignUpPage />
-			},
-			{
-				path: "/user/:username",
-				element: <UserPage />
 			}
 		]
 	}

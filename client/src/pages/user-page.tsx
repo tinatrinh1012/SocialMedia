@@ -24,7 +24,7 @@ export default function UserPage() {
                 fetchUserFriends();
                 fetchUserPosts();
             } catch (error) {
-                navigate('/login');
+                navigate('/new-user/login');
                 window.alert(`You're not authenticated. Please log in with username ${username}`);
             }
         }

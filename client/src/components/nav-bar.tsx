@@ -14,7 +14,7 @@ export default function NavBar() {
                 setUser(user);
             } else {
                 setUser(null);
-                navigate('/login');
+                navigate('/new-user/login');
             }
         }
 
@@ -33,7 +33,7 @@ export default function NavBar() {
 
             if (result.status === 200) {
                 setUser(null);
-                navigate('/login');
+                navigate('/new-user/login');
             } else {
                 throw Error('Error logging out');
             }
@@ -62,10 +62,10 @@ export default function NavBar() {
                             ) : (
                                 <>
                                     <li className="nav-item">
-                                        <Link to={"/login"} className="nav-link">Log in</Link>
+                                        <Link to={"/new-user/login"} className="nav-link">Log in</Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link to={"/signup"} className="nav-link">Sign up</Link>
+                                        <Link to={"/new-user/signup"} className="nav-link">Sign up</Link>
                                     </li>
                                 </>
                             )}
