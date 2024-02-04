@@ -87,6 +87,7 @@ export default function Post({ post, onPostDelete, onPostUpdate, allowEdit, user
     }
 
     function liked() {
+        // TODO: fix logic after implementing global state logged in user context. user props is current user page user
         return post.likes.indexOf(user.username) > -1;
     }
 
