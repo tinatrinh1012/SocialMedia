@@ -137,7 +137,7 @@ export default function Post({ post, onPostDelete, onPostUpdate, allowEdit }: Po
                         </small>
                     </div>
                     <div className="card-footer text-body-secondary">
-                        <h6>Likes: { post.likes }</h6>
+                        <h6><button type="button" className="btn btn-outline-primary"><i className="bi bi-suit-heart"></i> { post.likes.length }</button></h6>
 
                         <h6>Comments:</h6>
                         {comments?.map(comment => (

@@ -40,6 +40,7 @@ postRouter.post('/:username/create', async (req, res) => {
             createdBy: username,
             createdTime: new Date(),
             text: text,
+            likes: []
         });
         res.status(201).json(createdPost);
     } catch (error) {
