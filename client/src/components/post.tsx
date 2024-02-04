@@ -1,15 +1,17 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { PostModel } from "../models/post";
 import { CommentModel } from "../models/comment";
+import { UserModel } from "../models/user";
 
 interface PostProps {
     post: PostModel;
     onPostDelete: (_id: string) => void;
     onPostUpdate: (_id: string) => void;
     allowEdit: boolean;
+    user: UserModel;
 }
 
-export default function Post({ post, onPostDelete, onPostUpdate, allowEdit }: PostProps) {
+export default function Post({ post, onPostDelete, onPostUpdate, allowEdit, user }: PostProps) {
     const [comments, setComments] = useState<CommentModel[]>();
     const [editMode, setEditMode ] = useState<boolean>(false);
     const [editText, setEditText] = useState<string>(post.text);
@@ -84,6 +86,10 @@ export default function Post({ post, onPostDelete, onPostUpdate, allowEdit }: Po
         setEditText(e.target.value);
     }
 
+    function liked() {
+        return post.likes.indexOf(user.username) > -1;
+    }
+
     return (
         <div className="row mb-4">
             <div className="col-8">
@@ -137,7 +143,13 @@ export default function Post({ post, onPostDelete, onPostUpdate, allowEdit }: Po
                         </small>
                     </div>
                     <div className="card-footer text-body-secondary">
-                        <h6><button type="button" className="btn btn-outline-primary"><i className="bi bi-suit-heart"></i> { post.likes.length }</button></h6>
+                        <h6>
+                            { liked() ? (
+                                <button type="button" className="btn btn-outline-primary"><i className="bi bi-suit-heart-fill"></i> { post.likes.length }</button>
+                            ) : (
+                                <button type="button" className="btn btn-outline-primary"><i className="bi bi-suit-heart"></i> { post.likes.length }</button>
+                            )}
+                        </h6>
 
                         <h6>Comments:</h6>
                         {comments?.map(comment => (

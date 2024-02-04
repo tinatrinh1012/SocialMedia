@@ -110,7 +110,8 @@ export default function UserPage() {
                     post={post}
                     onPostDelete={onPostDelete}
                     onPostUpdate={onPostUpdate}
-                    allowEdit={isCurrentUser}></Post>
+                    allowEdit={isCurrentUser}
+                    user={user!}></Post>
             ))}
         </div>
     )
