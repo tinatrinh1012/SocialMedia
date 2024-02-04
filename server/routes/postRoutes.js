@@ -57,16 +57,17 @@ postRouter.put('/:_id/update', async (req, res) => {
             throw Error('Not authenticated');
         }
 
-        const previousPost = await Post.findOneAndUpdate(
+        const updatedPost = await Post.findOneAndUpdate(
             { _id: _id, createdBy: req.user.username },
-            { text: text }
+            { text: text },
+            { returnDocument: 'after' }
         )
 
-        if (previousPost == null) {
+        if (updatedPost == null) {
             throw Error('Unable to update post. Make sure you are authenticated as post owner to edit post');
         }
 
-        res.status(200).json(previousPost);
+        res.status(200).json(updatedPost);
     } catch (error) {
         res.status(400).json(error);
     }
@@ -80,6 +81,42 @@ postRouter.delete('/:_id/delete', async (req, res) => {
         res.status(200).json({ message: "Successfully deleted post" })
     } catch (error) {
         res.status(400).json({ error: error.message })
+    }
+})
+
+postRouter.put('/:_id/like', async (req, res) => {
+    try {
+        const { _id } = req.params;
+
+        if (req.user == null) {
+            throw Error('Not authenticated');
+        }
+
+        let post = await Post.findById(_id);
+        post.likes.push(req.user.username);
+        await post.save();
+
+        res.status(200).json({ message: 'Liked post successfully' });
+    } catch (error) {
+        res.status(400).json(error);
+    }
+})
+
+postRouter.put('/:_id/unlike', async (req, res) => {
+    try {
+        const { _id } = req.params;
+
+        if (req.user == null) {
+            throw Error('Not authenticated');
+        }
+
+        let post = await Post.findById(_id);
+        post.likes = post.likes.filter(username => username !== req.user.username);
+        await post.save();
+
+        res.status(200).json({ message: 'Unliked post successfully' });
+    } catch (error) {
+        res.status(400).json(error);
     }
 })
 

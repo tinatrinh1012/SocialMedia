@@ -90,6 +90,42 @@ export default function Post({ post, onPostDelete, onPostUpdate, allowEdit, user
         return post.likes.indexOf(user.username) > -1;
     }
 
+    async function likePost() {
+        try {
+            const response = await fetch(`http://localhost:3000/posts/${post._id}/like`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include'
+            })
+
+            if (response.status === 200) {
+                onPostUpdate(post._id);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function unlikePost() {
+        try {
+            const response = await fetch(`http://localhost:3000/posts/${post._id}/unlike`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include'
+            })
+
+            if (response.status === 200) {
+                onPostUpdate(post._id);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
         <div className="row mb-4">
             <div className="col-8">
@@ -145,9 +181,13 @@ export default function Post({ post, onPostDelete, onPostUpdate, allowEdit, user
                     <div className="card-footer text-body-secondary">
                         <h6>
                             { liked() ? (
-                                <button type="button" className="btn btn-outline-primary"><i className="bi bi-suit-heart-fill"></i> { post.likes.length }</button>
+                                <button onClick={unlikePost} type="button" className="btn btn-outline-primary">
+                                    <i className="bi bi-suit-heart-fill"></i> { post.likes.length }
+                                </button>
                             ) : (
-                                <button type="button" className="btn btn-outline-primary"><i className="bi bi-suit-heart"></i> { post.likes.length }</button>
+                                <button onClick={likePost} type="button" className="btn btn-outline-primary">
+                                    <i className="bi bi-suit-heart"></i> { post.likes.length }
+                                </button>
                             )}
                         </h6>
 
