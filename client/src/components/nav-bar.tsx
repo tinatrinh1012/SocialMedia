@@ -1,25 +1,10 @@
-import { FormEvent, useEffect, useState } from "react";
-import { UserModel } from "../models/user";
+import { FormEvent, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { CurrentUserContext } from "../App";
 
 export default function NavBar() {
-    const [user, setUser] = useState<UserModel | null>();
     const navigate = useNavigate();
-
-    useEffect(() => {
-        async function getLoggedInUser() {
-            const response = await fetch('http://localhost:3000/auth/current-user', { credentials: 'include' });
-            if (response.status === 200) {
-                const user = await response.json();
-                setUser(user);
-            } else {
-                setUser(null);
-                navigate('/new-user/login');
-            }
-        }
-
-        getLoggedInUser();
-    }, [navigate])
+    const currentUser = useContext(CurrentUserContext);
 
     async function logout(e: FormEvent) {
         try {
@@ -32,7 +17,6 @@ export default function NavBar() {
             })
 
             if (result.status === 200) {
-                setUser(null);
                 navigate('/new-user/login');
             } else {
                 throw Error('Error logging out');
@@ -52,7 +36,7 @@ export default function NavBar() {
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav">
-                            {user ? (
+                            {currentUser ? (
                                 <>
                                     <li className="nav-item">
                                         <Link to={'/'} className="nav-link">Home</Link>
@@ -74,7 +58,7 @@ export default function NavBar() {
                         </ul>
                     </div>
                 </div>
-                <h1 className="navbar-brand mb-0">{ user?.username }</h1>
+                <h1 className="navbar-brand mb-0">{ currentUser?.username}</h1>
             </nav>
         </div>
     )
