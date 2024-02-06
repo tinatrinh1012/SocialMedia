@@ -1,10 +1,10 @@
 import { FormEvent, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { CurrentUserContext } from "../App";
+import { LoggedInUserContext } from "../App";
 
 export default function NavBar() {
     const navigate = useNavigate();
-    const currentUser = useContext(CurrentUserContext);
+    const currentUser = useContext(LoggedInUserContext);
 
     async function logout(e: FormEvent) {
         try {

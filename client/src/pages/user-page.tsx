@@ -4,7 +4,7 @@ import { UserModel } from "../models/user";
 import { PostModel } from "../models/post";
 import Post from "../components/post";
 import CreatePost from "../components/create-post";
-import { CurrentUserContext } from "../App";
+import { LoggedInUserContext } from "../App";
 
 export default function UserPage() {
     const { username } = useParams();
@@ -12,7 +12,7 @@ export default function UserPage() {
     const [userFriends, setUserFriends] = useState<UserModel[]>();
     const [userPosts, setUserPosts] = useState<PostModel[]>();
     const navigate = useNavigate();
-    const currentUser = useContext(CurrentUserContext);
+    const currentUser = useContext(LoggedInUserContext);
 
     useEffect(() => {
         async function fetchUser() {

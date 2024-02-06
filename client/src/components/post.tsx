@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react";
 import { PostModel } from "../models/post";
 import { CommentModel } from "../models/comment";
-import { CurrentUserContext } from "../App";
+import { LoggedInUserContext } from "../App";
 
 interface PostProps {
     post: PostModel;
@@ -13,7 +13,7 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
     const [comments, setComments] = useState<CommentModel[]>();
     const [editMode, setEditMode ] = useState<boolean>(false);
     const [editText, setEditText] = useState<string>(post.text);
-    const currentUser = useContext(CurrentUserContext);
+    const currentUser = useContext(LoggedInUserContext);
 
     useEffect(() => {
         async function fetchPostComments() {
