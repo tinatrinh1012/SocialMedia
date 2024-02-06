@@ -7,12 +7,13 @@ import CreatePost from "../components/create-post";
 import { LoggedInUserContext } from "../App";
 
 export default function UserPage() {
+    // TODO: potentially separate posts list and friends list to their own component
     const { username } = useParams();
     const [user, setUser] = useState<UserModel>();
     const [userFriends, setUserFriends] = useState<UserModel[]>();
     const [userPosts, setUserPosts] = useState<PostModel[]>();
     const navigate = useNavigate();
-    const currentUser = useContext(LoggedInUserContext);
+    const loggedInUser = useContext(LoggedInUserContext);
 
     useEffect(() => {
         async function fetchUser() {
@@ -87,7 +88,7 @@ export default function UserPage() {
     }
 
     function allowCreatePost() {
-        return currentUser?.username === username;
+        return loggedInUser?.username === username;
     }
 
     return (

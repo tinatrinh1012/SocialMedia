@@ -4,7 +4,7 @@ import { LoggedInUserContext } from "../App";
 
 export default function NavBar() {
     const navigate = useNavigate();
-    const currentUser = useContext(LoggedInUserContext);
+    const loggedInUser = useContext(LoggedInUserContext);
 
     async function logout(e: FormEvent) {
         try {
@@ -36,7 +36,7 @@ export default function NavBar() {
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav">
-                            {currentUser ? (
+                            {loggedInUser ? (
                                 <>
                                     <li className="nav-item">
                                         <Link to={'/'} className="nav-link">Home</Link>
@@ -58,7 +58,7 @@ export default function NavBar() {
                         </ul>
                     </div>
                 </div>
-                <h1 className="navbar-brand mb-0">{ currentUser?.username}</h1>
+                <h1 className="navbar-brand mb-0">{ loggedInUser?.username}</h1>
             </nav>
         </div>
     )

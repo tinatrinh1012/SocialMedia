@@ -13,7 +13,7 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
     const [comments, setComments] = useState<CommentModel[]>();
     const [editMode, setEditMode ] = useState<boolean>(false);
     const [editText, setEditText] = useState<string>(post.text);
-    const currentUser = useContext(LoggedInUserContext);
+    const loggedInUser = useContext(LoggedInUserContext);
 
     useEffect(() => {
         async function fetchPostComments() {
@@ -86,14 +86,14 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
     }
 
     function liked(): boolean {
-        if (currentUser) {
-            return post.likes.indexOf(currentUser.username) > -1;
+        if (loggedInUser) {
+            return post.likes.indexOf(loggedInUser.username) > -1;
         }
         return false;
     }
 
     function allowEditPost(): boolean {
-        return currentUser?.username === post.createdBy;
+        return loggedInUser?.username === post.createdBy;
     }
 
     async function likePost() {
