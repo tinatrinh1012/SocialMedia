@@ -1,25 +1,25 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import { UserModel } from "../models/user";
 import { PostModel } from "../models/post";
 import Post from "../components/post";
 import CreatePost from "../components/create-post";
+import { CurrentUserContext } from "../App";
 
 export default function UserPage() {
     const { username } = useParams();
     const [user, setUser] = useState<UserModel>();
     const [userFriends, setUserFriends] = useState<UserModel[]>();
     const [userPosts, setUserPosts] = useState<PostModel[]>();
-    const [isCurrentUser, setIsCurrentUser] = useState<boolean>(false);
     const navigate = useNavigate();
+    const currentUser = useContext(CurrentUserContext);
 
     useEffect(() => {
         async function fetchUser() {
             try {
                 const response = await fetch(`http://localhost:3000/users/${username}/profile`, {credentials: 'include'});
-                const json = await response.json();
-                setUser(json.user);
-                setIsCurrentUser(json.isCurrentUser);
+                const user = await response.json();
+                setUser(user);
 
                 fetchUserFriends();
                 fetchUserPosts();
@@ -86,7 +86,9 @@ export default function UserPage() {
         }
     }
 
-
+    function allowCreatePost() {
+        return currentUser?.username === username;
+    }
 
     return (
         <div className="container">
@@ -99,7 +101,7 @@ export default function UserPage() {
                 ))}
             </ul>
 
-            {isCurrentUser ? (
+            {allowCreatePost() ? (
                 <CreatePost username={username!} onPostCreate={onPostCreate}></CreatePost>
             ) : <></>}
 
@@ -109,9 +111,7 @@ export default function UserPage() {
                     key={post._id}
                     post={post}
                     onPostDelete={onPostDelete}
-                    onPostUpdate={onPostUpdate}
-                    allowEdit={isCurrentUser}
-                    user={user!}></Post>
+                    onPostUpdate={onPostUpdate}></Post>
             ))}
         </div>
     )

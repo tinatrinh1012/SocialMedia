@@ -1,20 +1,19 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react";
 import { PostModel } from "../models/post";
 import { CommentModel } from "../models/comment";
-import { UserModel } from "../models/user";
+import { CurrentUserContext } from "../App";
 
 interface PostProps {
     post: PostModel;
     onPostDelete: (_id: string) => void;
     onPostUpdate: (_id: string) => void;
-    allowEdit: boolean;
-    user: UserModel;
 }
 
-export default function Post({ post, onPostDelete, onPostUpdate, allowEdit, user }: PostProps) {
+export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
     const [comments, setComments] = useState<CommentModel[]>();
     const [editMode, setEditMode ] = useState<boolean>(false);
     const [editText, setEditText] = useState<string>(post.text);
+    const currentUser = useContext(CurrentUserContext);
 
     useEffect(() => {
         async function fetchPostComments() {
@@ -86,9 +85,15 @@ export default function Post({ post, onPostDelete, onPostUpdate, allowEdit, user
         setEditText(e.target.value);
     }
 
-    function liked() {
-        // TODO: fix logic after implementing global state logged in user context. user props is current user page user
-        return post.likes.indexOf(user.username) > -1;
+    function liked(): boolean {
+        if (currentUser) {
+            return post.likes.indexOf(currentUser.username) > -1;
+        }
+        return false;
+    }
+
+    function allowEditPost(): boolean {
+        return currentUser?.username === post.createdBy;
     }
 
     async function likePost() {
@@ -145,7 +150,7 @@ export default function Post({ post, onPostDelete, onPostUpdate, allowEdit, user
                             <p className="card-text">{ editText }</p>
                         )}
 
-                        {allowEdit ? (
+                        {allowEditPost() ? (
                             <div>
                                 { editMode ? (
                                     <button
