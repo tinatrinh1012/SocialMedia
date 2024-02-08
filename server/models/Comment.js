@@ -4,7 +4,8 @@ import { mongoose } from '../database.js';
 const commentSchema = new mongoose.Schema(
     {
         text: String,
-        postId: ObjectId
+        postId: ObjectId,
+        createdBy: String
     },
     { collection: 'Comments' }
 )

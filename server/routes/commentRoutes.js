@@ -18,7 +18,8 @@ commentRouter.post('/create', async (req, res) => {
         const { postId, text } = req.body;
         const newComment = await Comment.create({
             postId: postId,
-            text: text
+            text: text,
+            createdBy: req.user.username
         });
         res.status(201).json(newComment);
     } catch (error) {
