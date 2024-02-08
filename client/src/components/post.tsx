@@ -10,9 +10,10 @@ interface PostProps {
 }
 
 export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
-    const [comments, setComments] = useState<CommentModel[]>();
+    const [comments, setComments] = useState<CommentModel[]>([]);
     const [editMode, setEditMode ] = useState<boolean>(false);
     const [editText, setEditText] = useState<string>(post.text);
+    const [commentText, setCommentText] = useState<string>('');
     const loggedInUser = useContext(LoggedInUserContext);
 
     useEffect(() => {
@@ -132,6 +133,28 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
         }
     }
 
+    async function addComment() {
+        try {
+            const response = await fetch(`http://localhost:3000/comments/create`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    postId: post._id,
+                    text: commentText
+                })
+            })
+
+            const comment = await response.json();
+            setComments([...comments, comment]);
+            setCommentText('');
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
         <div className="row mb-4">
             <div className="col-8">
@@ -201,6 +224,13 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
                         {comments?.map(comment => (
                             <p key={comment._id}>- {comment.text}</p>
                         ))}
+
+                        <div className="input-group">
+                            <input value={commentText} onChange={ e => setCommentText(e.target.value) } type="text" className="form-control" placeholder="Add comment"></input>
+                            <div className="input-group-append">
+                                <button onClick={addComment} className="btn btn btn-outline-secondary" type="button">Add</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
