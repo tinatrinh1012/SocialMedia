@@ -13,4 +13,17 @@ commentRouter.get('/:postId', async (req, res) => {
     }
 })
 
+commentRouter.post('/create', async (req, res) => {
+    try {
+        const { postId, text } = req.body;
+        const newComment = await Comment.create({
+            postId: postId,
+            text: text
+        });
+        res.status(201).json(newComment);
+    } catch (error) {
+        res.status(400).json(error);
+    }
+})
+
 export default commentRouter;
