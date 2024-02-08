@@ -210,14 +210,17 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
                     </div>
                     <div className="card-footer text-body-secondary">
                         <h6>
-                            { liked() ? (
-                                <div><i onClick={unlikePost} className="bi bi-suit-heart-fill like-icon text-danger"></i> { post.likes.length }</div>
-                            ) : (
-                                <div><i onClick={likePost} className="bi bi-suit-heart like-icon"></i> { post.likes.length }</div>
-                            )}
+                            <div>
+                                { liked() ? (
+                                    <><i onClick={unlikePost} className="bi bi-suit-heart-fill like-icon text-danger"></i> { post.likes.length }</>
+                                ) : (
+                                    <><i onClick={likePost} className="bi bi-suit-heart like-icon"></i> { post.likes.length }</>
+                                )}
+
+                                <i className="bi bi-chat ms-3"></i> {comments.length}
+                            </div>
                         </h6>
 
-                        <h6>Comments</h6>
                         {comments?.map(comment => (
                             <p key={comment._id}>- {comment.text}</p>
                         ))}
