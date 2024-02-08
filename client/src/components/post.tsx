@@ -2,6 +2,7 @@ import { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react";
 import { PostModel } from "../models/post";
 import { CommentModel } from "../models/comment";
 import { LoggedInUserContext } from "../App";
+import "./post.css";
 
 interface PostProps {
     post: PostModel;
@@ -210,17 +211,13 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
                     <div className="card-footer text-body-secondary">
                         <h6>
                             { liked() ? (
-                                <button onClick={unlikePost} type="button" className="btn btn-outline-primary">
-                                    <i className="bi bi-suit-heart-fill"></i> { post.likes.length }
-                                </button>
+                                <div><i onClick={unlikePost} className="bi bi-suit-heart-fill like-icon text-danger"></i> { post.likes.length }</div>
                             ) : (
-                                <button onClick={likePost} type="button" className="btn btn-outline-primary">
-                                    <i className="bi bi-suit-heart"></i> { post.likes.length }
-                                </button>
+                                <div><i onClick={likePost} className="bi bi-suit-heart like-icon"></i> { post.likes.length }</div>
                             )}
                         </h6>
 
-                        <h6>Comments:</h6>
+                        <h6>Comments</h6>
                         {comments?.map(comment => (
                             <p key={comment._id}>- {comment.text}</p>
                         ))}
@@ -228,7 +225,7 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
                         <div className="input-group">
                             <input value={commentText} onChange={ e => setCommentText(e.target.value) } type="text" className="form-control" placeholder="Add comment"></input>
                             <div className="input-group-append">
-                                <button onClick={addComment} className="btn btn btn-outline-secondary" type="button">Add</button>
+                                <button onClick={addComment} className="btn btn btn-outline-primary" type="button">Add</button>
                             </div>
                         </div>
                     </div>
