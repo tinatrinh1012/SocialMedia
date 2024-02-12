@@ -17,16 +17,17 @@ export default function App() {
                 const user = await response.json();
                 setUser(user);
             } else {
-                setUser(null);
                 navigate('/new-user/login');
             }
         }
 
-        if (!location.pathname.includes('new-user')) {
+        if (location.pathname.includes('new-user')) {
+            setUser(null);
+        } else if (user == null){
             getLoggedInUser();
         }
 
-    }, [location, navigate])
+    }, [location.pathname, navigate, user])
 
     return (
         <>
