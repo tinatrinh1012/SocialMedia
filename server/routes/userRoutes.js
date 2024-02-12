@@ -29,7 +29,6 @@ userRouter.post('/create', async (req, res) => {
 })
 
 userRouter.get('/:username/profile', async (req, res) => {
-    console.log('/profile');
     try {
         const { username } = req.params;
 

@@ -7,18 +7,20 @@ const authRouter = express.Router();
 
 authRouter.post('/login', (req, res) => {
     console.log('/login');
-    passport.authenticate('local', (err, user, info, status) => {
+    passport.authenticate('local', (err, user) => {
         if (err) {
-            res.status(400).json(err);
+            return res.status(400).json(err);
         }
         if (!user) {
-            res.status(400).json({ error: 'Invalid username or password' })
+            return res.status(400).json({ error: 'Invalid username or password' })
         }
+
         req.login(user, (err) => {
             if (err) {
-                res.status(400).json({ error: 'Login failed' });
+                return res.status(400).json({ error: 'Error logging in' });
             }
-            res.status(200).json({ success: 'User authenticated' });
+
+            return res.status(200).json({ success: 'Logged in successfully' });
         });
     })(req, res);
 })

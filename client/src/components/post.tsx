@@ -222,9 +222,9 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
                         </h6>
 
                         {comments?.map(comment => (
-                            <div>
+                            <div key={comment._id}>
                                 <h6 className="mb-0">{comment.createdBy}</h6>
-                                <p key={comment._id}>{comment.text}</p>
+                                <p>{comment.text}</p>
                             </div>
                         ))}
 

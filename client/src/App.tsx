@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import NavBar from "./components/nav-bar";
 import { createContext, useEffect, useState } from "react";
 import { UserModel } from "./models/user";
@@ -8,6 +8,7 @@ export const LoggedInUserContext = createContext<UserModel | null | undefined>(n
 export default function App() {
     const [user, setUser] = useState<UserModel | null>();
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         async function getLoggedInUser() {
@@ -21,8 +22,11 @@ export default function App() {
             }
         }
 
-        getLoggedInUser();
-    }, [navigate])
+        if (!location.pathname.includes('new-user')) {
+            getLoggedInUser();
+        }
+
+    }, [location, navigate])
 
     return (
         <>
