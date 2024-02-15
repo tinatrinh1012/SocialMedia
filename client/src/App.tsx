@@ -3,7 +3,12 @@ import NavBar from "./components/nav-bar";
 import { createContext, useEffect, useState } from "react";
 import { UserModel } from "./models/user";
 
-export const LoggedInUserContext = createContext<UserModel | null | undefined>(null)
+type UserContextType = {
+    user: UserModel | null | undefined,
+    setUser: React.Dispatch<React.SetStateAction<UserModel | null | undefined>>
+}
+
+export const LoggedInUserContext = createContext<UserContextType>({user: null, setUser: () => {}})
 
 export default function App() {
     const [user, setUser] = useState<UserModel | null>();
@@ -31,7 +36,7 @@ export default function App() {
 
     return (
         <>
-            <LoggedInUserContext.Provider value={user}>
+            <LoggedInUserContext.Provider value={{user, setUser}}>
                 <NavBar/>
                 <div className="container">
                     <Outlet/>
