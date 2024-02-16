@@ -22,6 +22,10 @@ export default function App() {
             if (response.status === 200) {
                 const user = await response.json();
                 setUser(user);
+
+                if (location.pathname.includes('login')) {
+                    navigate('/');
+                }
             } else {
                 navigate('/login');
             }
@@ -30,7 +34,7 @@ export default function App() {
         if (user == null) {
             getLoggedInUser();
         }
-    }, [location.pathname, navigate, user])
+    }, [navigate, user])
 
     return (
         <>
