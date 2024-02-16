@@ -17,7 +17,8 @@ export default function NavBar() {
             })
 
             if (result.status === 200) {
-                navigate('/new-user/login');
+                loggedInUser.setUser(null);
+                navigate('/login');
             } else {
                 throw Error('Error logging out');
             }
@@ -36,7 +37,7 @@ export default function NavBar() {
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav">
-                            {loggedInUser ? (
+                            {loggedInUser.user ? (
                                 <>
                                     <li className="nav-item">
                                         <Link to={'/'} className="nav-link">Home</Link>
@@ -48,17 +49,17 @@ export default function NavBar() {
                             ) : (
                                 <>
                                     <li className="nav-item">
-                                        <Link to={"/new-user/login"} className="nav-link">Log in</Link>
+                                        <Link to={"/login"} className="nav-link">Log in</Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link to={"/new-user/signup"} className="nav-link">Sign up</Link>
+                                        <Link to={"/signup"} className="nav-link">Sign up</Link>
                                     </li>
                                 </>
                             )}
                         </ul>
                     </div>
                 </div>
-                <h1 className="navbar-brand mb-0">{ loggedInUser?.username}</h1>
+                <h1 className="navbar-brand mb-0">{ loggedInUser?.user?.username}</h1>
             </nav>
         </div>
     )

@@ -89,13 +89,13 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
 
     function liked(): boolean {
         if (loggedInUser) {
-            return post.likes.indexOf(loggedInUser.username) > -1;
+            return post.likes.indexOf(loggedInUser.user!.username) > -1;
         }
         return false;
     }
 
     function allowEditPost(): boolean {
-        return loggedInUser?.username === post.createdBy;
+        return loggedInUser?.user?.username === post.createdBy;
     }
 
     async function likePost() {

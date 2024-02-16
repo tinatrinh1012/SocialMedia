@@ -20,7 +20,7 @@ authRouter.post('/login', (req, res) => {
                 return res.status(400).json({ error: 'Error logging in' });
             }
 
-            return res.status(200).json({ success: 'Logged in successfully' });
+            return res.status(200).json(user);
         });
     })(req, res);
 })

@@ -88,7 +88,7 @@ export default function UserPage() {
     }
 
     function allowCreatePost() {
-        return loggedInUser?.username === username;
+        return loggedInUser?.user?.username === username;
     }
 
     return (

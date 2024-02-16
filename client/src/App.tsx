@@ -17,21 +17,19 @@ export default function App() {
 
     useEffect(() => {
         async function getLoggedInUser() {
+            console.log("fetch current user");
             const response = await fetch('http://localhost:3000/auth/current-user', { credentials: 'include' });
             if (response.status === 200) {
                 const user = await response.json();
                 setUser(user);
             } else {
-                navigate('/new-user/login');
+                navigate('/login');
             }
         }
 
-        if (location.pathname.includes('new-user')) {
-            setUser(null);
-        } else if (user == null){
+        if (user == null) {
             getLoggedInUser();
         }
-
     }, [location.pathname, navigate, user])
 
     return (

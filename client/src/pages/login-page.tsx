@@ -1,10 +1,12 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { LoggedInUserContext } from "../App";
 
 export default function LoginPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+    const loggedInUser = useContext(LoggedInUserContext);
 
     async function login(e: FormEvent) {
         e.preventDefault();
@@ -20,6 +22,8 @@ export default function LoginPage() {
 
             if (result.status === 200) {
                 navigate(`/user/${username}`);
+                const user = await result.json();
+                loggedInUser.setUser(user);
             } else {
                 window.alert('Unable to log in');
             }
