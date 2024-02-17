@@ -38,9 +38,8 @@ export default function CreatePost({ username, onPostCreate }: Props) {
     return (
         <div className="mb-3">
             <form>
-                <label className="form-label" htmlFor="create-post-text">Create a post</label>
                 <div className="row mb-2">
-                    <div className="col-6">
+                    <div className="col">
                         <textarea
                             className="form-control"
                             id="create-post-text"
@@ -51,7 +50,7 @@ export default function CreatePost({ username, onPostCreate }: Props) {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col">
                         <button className="btn btn-primary" onClick={handleSubmit}>Post</button>
                     </div>
                 </div>

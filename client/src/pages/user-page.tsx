@@ -94,26 +94,30 @@ export default function UserPage() {
     return (
         <div className="container">
             <h2>{user?.firstName} {user?.lastName}</h2>
-
-            <div>Friends</div>
-            <ul>
-                {userFriends?.map(friend => (
-                    <li key={friend._id}>{friend.firstName} {friend.lastName} ({friend.username})</li>
-                ))}
-            </ul>
-
-            {allowCreatePost() ? (
-                <CreatePost username={username!} onPostCreate={onPostCreate}></CreatePost>
-            ) : <></>}
+            <div className="row">
+                <div className="col-8">
+                    {allowCreatePost() ? (
+                        <CreatePost username={username!} onPostCreate={onPostCreate}></CreatePost>
+                    ) : <></>}
 
 
-            {userPosts?.map(post => (
-                <Post
-                    key={post._id}
-                    post={post}
-                    onPostDelete={onPostDelete}
-                    onPostUpdate={onPostUpdate}></Post>
-            ))}
+                    {userPosts?.map(post => (
+                        <Post
+                            key={post._id}
+                            post={post}
+                            onPostDelete={onPostDelete}
+                            onPostUpdate={onPostUpdate}></Post>
+                    ))}
+                </div>
+                <div className="col-4">
+                    <div>Friends</div>
+                        <ul>
+                            {userFriends?.map(friend => (
+                                <li key={friend._id}>{friend.firstName} {friend.lastName} ({friend.username})</li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
         </div>
     )
 }

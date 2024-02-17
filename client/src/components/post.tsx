@@ -159,7 +159,7 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
 
     return (
         <div className="row mb-4">
-            <div className="col-8">
+            <div className="col">
                 <div className="card">
                     <h5 className="card-header">
                         <Link to={`/user/${post.createdBy}`}>{ post.createdBy }</Link>
