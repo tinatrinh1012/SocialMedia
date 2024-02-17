@@ -3,6 +3,7 @@ import { PostModel } from "../models/post";
 import { CommentModel } from "../models/comment";
 import { LoggedInUserContext } from "../App";
 import "./post.css";
+import { Link } from "react-router-dom";
 
 interface PostProps {
     post: PostModel;
@@ -161,7 +162,7 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
             <div className="col-8">
                 <div className="card">
                     <h5 className="card-header">
-                        { post.createdBy }
+                        <Link to={`/user/${post.createdBy}`}>{ post.createdBy }</Link>
                     </h5>
                     <div className="card-body">
                         { editMode ? (
@@ -223,7 +224,9 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
 
                         {comments?.map(comment => (
                             <div key={comment._id}>
-                                <h6 className="mb-0">{comment.createdBy}</h6>
+                                <h6 className="mb-0">
+                                    <Link to={`/user/${comment.createdBy}`}>{comment.createdBy}</Link>
+                                </h6>
                                 <p>{comment.text}</p>
                             </div>
                         ))}

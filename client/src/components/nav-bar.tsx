@@ -43,6 +43,9 @@ export default function NavBar() {
                                         <Link to={'/'} className="nav-link">Home</Link>
                                     </li>
                                     <li className="nav-item">
+                                        <Link to={`/user/${loggedInUser.user.username}`} className="nav-link">My Profile</Link>
+                                    </li>
+                                    <li className="nav-item">
                                         <button className="nav-link" onClick={logout}>Log out</button>
                                     </li>
                                 </>
