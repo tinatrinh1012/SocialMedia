@@ -110,10 +110,10 @@ export default function UserPage() {
                     ))}
                 </div>
                 <div className="col-4">
-                    <div>Friends</div>
+                    <h3>Friends</h3>
                         <ul>
                             {userFriends?.map(friend => (
-                                <li key={friend._id}>{friend.firstName} {friend.lastName} ({friend.username})</li>
+                                <li key={friend._id}>{friend.firstName} {friend.lastName}</li>
                             ))}
                         </ul>
                     </div>
