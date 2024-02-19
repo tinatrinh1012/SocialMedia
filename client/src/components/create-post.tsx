@@ -50,8 +50,11 @@ export default function CreatePost({ username, onPostCreate }: Props) {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col">
-                        <button className="btn btn-primary" onClick={handleSubmit}>Post</button>
+                    <div className="col d-flex justify-content-center">
+                        <button className="btn btn-primary w-100" onClick={handleSubmit}>
+                            Post
+                            <i className="bi bi-chevron-double-up ms-2"></i>
+                        </button>
                     </div>
                 </div>
             </form>

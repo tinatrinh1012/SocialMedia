@@ -97,12 +97,14 @@ export default function UserPage() {
                 <h2>{user?.firstName} {user?.lastName}</h2>
             </div>
             <div className="row">
-                <div className="col-8">
+                <div className="col">
                     {allowCreatePost() ? (
                         <CreatePost username={username!} onPostCreate={onPostCreate}></CreatePost>
                     ) : <></>}
-
-
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-8">
                     {userPosts?.map(post => (
                         <Post
                             key={post._id}

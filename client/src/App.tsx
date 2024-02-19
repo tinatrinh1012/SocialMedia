@@ -39,7 +39,9 @@ export default function App() {
     return (
         <>
             <LoggedInUserContext.Provider value={{user, setUser}}>
-                <NavBar/>
+                <div className="sticky-top">
+                    <NavBar/>
+                </div>
                 <div className="container">
                     <Outlet/>
                 </div>
