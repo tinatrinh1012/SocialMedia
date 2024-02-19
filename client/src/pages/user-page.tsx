@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { UserModel } from "../models/user";
 import { PostModel } from "../models/post";
 import Post from "../components/post";
@@ -110,14 +110,18 @@ export default function UserPage() {
                     ))}
                 </div>
                 <div className="col-4">
-                    <h3>Friends</h3>
-                        <ul>
+                    <div className="card">
+                        <div className="card-header"><h5>Friends ({userFriends?.length})</h5></div>
+                        <ul className="list-group list-group-flush">
                             {userFriends?.map(friend => (
-                                <li key={friend._id}>{friend.firstName} {friend.lastName}</li>
+                                <li key={friend._id} className="list-group-item">
+                                    <Link to={`/user/${friend.username}`}>{friend.firstName} {friend.lastName}</Link>
+                                </li>
                             ))}
                         </ul>
                     </div>
                 </div>
+            </div>
         </div>
     )
 }
