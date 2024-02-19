@@ -62,7 +62,7 @@ export default function NavBar() {
                         </ul>
                     </div>
                 </div>
-                <h1 className="navbar-brand mb-0">{ loggedInUser?.user?.username}</h1>
+                <h1 className="navbar-brand mb-0">{ loggedInUser?.user?.firstName} { loggedInUser?.user?.lastName}</h1>
             </nav>
         </div>
     )

@@ -93,7 +93,9 @@ export default function UserPage() {
 
     return (
         <div className="container">
-            <h2>{user?.firstName} {user?.lastName}</h2>
+            <div className="d-flex justify-content-center mt-3 mb-3">
+                <h2>{user?.firstName} {user?.lastName}</h2>
+            </div>
             <div className="row">
                 <div className="col-8">
                     {allowCreatePost() ? (
