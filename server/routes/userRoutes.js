@@ -85,4 +85,38 @@ userRouter.get('/:username/friends', async (req, res) => {
     }
 })
 
+userRouter.put('/:username/friends/add', async (req, res) => {
+    try {
+        const { username } = req.params;
+        const { friend } = req.body;
+        const user = await User.findOne({username: username});
+
+        if (user.friends.includes(friend)) {
+            throw new Error("Unable to add friend, this user is already a friend");
+        }
+        user.friends.push(friend);
+        await user.save();
+        return res.status(200).json({message: "Added friend successfully"})
+    } catch (error) {
+        return res.status(400).json(error);
+    }
+})
+
+userRouter.put('/:username/friends/remove', async (req, res) => {
+    try {
+        const { username } = req.params;
+        const { friend } = req.body;
+        const user = await User.findOne({username: username});
+
+        if (!user.friends.includes(friend)) {
+            throw new Error("Unable to remove friend, this user is currently not a friend");
+        }
+        user.friends = user.friends.filter(f => f !== friend);
+        await user.save();
+        return res.status(200).json({message: "Removed friend successfully"})
+    } catch (error) {
+        return res.status(400).json(error);
+    }
+})
+
 export default userRouter;
