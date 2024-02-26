@@ -92,23 +92,30 @@ export default function UserPage() {
     }
 
     function isFriend() {
-        if (loggedInUser.user && user) {
-            return loggedInUser.user.friends.includes(user.username)
-            && user.friends.includes(loggedInUser.user.username)
-        }
-        return false;
+        return user && loggedInUser.user?.friends.includes(user.username);
     }
 
     return (
         <div className="container">
-            <div className="d-flex justify-content-center mt-3 mb-3">
+            <div className="d-flex justify-content-center mt-3">
                 <h2>
                     {user?.firstName} {user?.lastName}
-                    {isFriend() ? (
-                        <i className="bi bi-person-check ms-2"></i>
-                    ) : (<></>)}
-
                 </h2>
+            </div>
+            <div className="d-flex justify-content-center mb-3">
+                {loggedInUser.user?.username !== user?.username ? (
+                    <>
+                        {isFriend() ? (
+                            <h3>
+                                <i className="bi bi-person-check ms-2"></i>
+                                <button type="button" className="btn btn-outline-danger btn-sm ms-2">Unfollow</button>
+                            </h3>
+                        ) : (
+                            <button type="button" className="btn btn-outline-primary btn-sm">Follow</button>
+                        )}
+                    </>
+                ) : (<></>)}
+
             </div>
             <div className="row">
                 <div className="col">
