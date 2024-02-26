@@ -116,8 +116,25 @@ export default function UserPage() {
         }
     }
 
-    function unfollowUser() {
+    async function unfollowUser() {
+        try {
+            const response = await fetch(`http://localhost:3000/users/${loggedInUser.user?.username}/friends/remove`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({friend: user?.username}),
+            })
 
+            if (response.status === 200) {
+                let updatedLoggedInUser = {...loggedInUser.user} as UserModel;
+                updatedLoggedInUser!.friends = updatedLoggedInUser.friends.filter(_ => _ !== user?.username);
+                loggedInUser.setUser(updatedLoggedInUser);
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     return (
@@ -133,7 +150,7 @@ export default function UserPage() {
                         {isFriend() ? (
                             <h3>
                                 <i className="bi bi-person-check ms-2"></i>
-                                <button type="button" className="btn btn-outline-danger btn-sm ms-2">Unfollow</button>
+                                <button type="button" className="btn btn-outline-danger btn-sm ms-2" onClick={unfollowUser}>Unfollow</button>
                             </h3>
                         ) : (
                             <button type="button" className="btn btn-outline-primary btn-sm" onClick={followUser}>Follow</button>
