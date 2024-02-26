@@ -10,7 +10,7 @@ export default function UserPage() {
     // TODO: potentially separate posts list and friends list to their own component
     const { username } = useParams();
     const [user, setUser] = useState<UserModel>();
-    const [userFriends, setUserFriends] = useState<UserModel[]>();
+    const [userFriends, setUserFriends] = useState<UserModel[]>([]);
     const [userPosts, setUserPosts] = useState<PostModel[]>();
     const navigate = useNavigate();
     const loggedInUser = useContext(LoggedInUserContext);
@@ -95,6 +95,31 @@ export default function UserPage() {
         return user && loggedInUser.user?.friends.includes(user.username);
     }
 
+    async function followUser() {
+        try {
+            const response = await fetch(`http://localhost:3000/users/${loggedInUser.user?.username}/friends/add`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({friend: user?.username}),
+            })
+
+            if (response.status === 200) {
+                let updatedLoggedInUser = {...loggedInUser.user} as UserModel;
+                updatedLoggedInUser?.friends.push(user!.username);
+                loggedInUser.setUser(updatedLoggedInUser);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    function unfollowUser() {
+
+    }
+
     return (
         <div className="container">
             <div className="d-flex justify-content-center mt-3">
@@ -111,7 +136,7 @@ export default function UserPage() {
                                 <button type="button" className="btn btn-outline-danger btn-sm ms-2">Unfollow</button>
                             </h3>
                         ) : (
-                            <button type="button" className="btn btn-outline-primary btn-sm">Follow</button>
+                            <button type="button" className="btn btn-outline-primary btn-sm" onClick={followUser}>Follow</button>
                         )}
                     </>
                 ) : (<></>)}
@@ -136,7 +161,7 @@ export default function UserPage() {
                 </div>
                 <div className="col-4">
                     <div className="card">
-                        <div className="card-header"><h5>Friends ({userFriends?.length})</h5></div>
+                        <div className="card-header"><h5>Following ({userFriends?.length})</h5></div>
                         <ul className="list-group list-group-flush">
                             {userFriends?.map(friend => (
                                 <li key={friend._id} className="list-group-item">
