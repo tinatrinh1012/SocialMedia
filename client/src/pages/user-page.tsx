@@ -7,7 +7,7 @@ import CreatePost from "../components/create-post";
 import { LoggedInUserContext } from "../App";
 
 export default function UserPage() {
-    // TODO: potentially separate posts list and friends list to their own component
+    // TODO: separate posts list and following list to their own component
     const { username } = useParams();
     const [pageUser, setPageUser] = useState<UserModel>();
     const [userFollowing, setUserFollowing] = useState<UserModel[]>([]);
@@ -91,7 +91,7 @@ export default function UserPage() {
         return loggedInUser?.user?.username === username;
     }
 
-    function isFriend() {
+    function isFollowing() {
         return pageUser && loggedInUser.user?.following.includes(pageUser.username);
     }
 
@@ -147,7 +147,7 @@ export default function UserPage() {
             <div className="d-flex justify-content-center mb-3">
                 {loggedInUser.user?.username !== pageUser?.username ? (
                     <>
-                        {isFriend() ? (
+                        {isFollowing() ? (
                             <h3>
                                 <i className="bi bi-person-check ms-2"></i>
                                 <button type="button" className="btn btn-outline-danger btn-sm ms-2" onClick={unfollowUser}>Unfollow</button>
