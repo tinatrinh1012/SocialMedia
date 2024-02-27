@@ -118,13 +118,13 @@ export default function UserPage() {
 
     async function unfollowUser() {
         try {
-            const response = await fetch(`http://localhost:3000/users/${loggedInUser.user?.username}/friends/remove`, {
+            const response = await fetch(`http://localhost:3000/users/${loggedInUser.user?.username}/following/remove`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
-                body: JSON.stringify({friend: pageUser?.username}),
+                body: JSON.stringify({ followingUsername: pageUser?.username }),
             })
 
             if (response.status === 200) {

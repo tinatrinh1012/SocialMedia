@@ -89,7 +89,7 @@ userRouter.put('/:username/following/add', async (req, res) => {
     try {
         const { username } = req.params;
         const { followingUsername } = req.body;
-        const user = await User.findOne({username: username});
+        const user = await User.findOne({ username: username });
 
         if (user.following.includes(followingUsername)) {
             throw new Error("You already follow this user");
@@ -102,18 +102,18 @@ userRouter.put('/:username/following/add', async (req, res) => {
     }
 })
 
-userRouter.put('/:username/friends/remove', async (req, res) => {
+userRouter.put('/:username/following/remove', async (req, res) => {
     try {
         const { username } = req.params;
-        const { friend } = req.body;
-        const user = await User.findOne({username: username});
+        const { followingUsername } = req.body;
+        const user = await User.findOne({ username: username });
 
-        if (!user.following.includes(friend)) {
-            throw new Error("Unable to remove friend, this user is currently not a friend");
+        if (!user.following.includes(followingUsername)) {
+            throw new Error("You're currently not following this user");
         }
-        user.following = user.following.filter(f => f !== friend);
+        user.following = user.following.filter(f => f !== followingUsername);
         await user.save();
-        return res.status(200).json({message: "Removed friend successfully"})
+        return res.status(200).json({message: "Unfollow user successfully"})
     } catch (error) {
         return res.status(400).json(error);
     }
