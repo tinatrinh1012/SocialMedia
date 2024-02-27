@@ -85,18 +85,18 @@ userRouter.get('/:username/following', async (req, res) => {
     }
 })
 
-userRouter.put('/:username/friends/add', async (req, res) => {
+userRouter.put('/:username/following/add', async (req, res) => {
     try {
         const { username } = req.params;
-        const { friend } = req.body;
+        const { followingUsername } = req.body;
         const user = await User.findOne({username: username});
 
-        if (user.following.includes(friend)) {
-            throw new Error("Unable to add friend, this user is already a friend");
+        if (user.following.includes(followingUsername)) {
+            throw new Error("You already follow this user");
         }
-        user.following.push(friend);
+        user.following.push(followingUsername);
         await user.save();
-        return res.status(200).json({message: "Added friend successfully"})
+        return res.status(200).json({message: "Follow user successfully"})
     } catch (error) {
         return res.status(400).json(error);
     }
