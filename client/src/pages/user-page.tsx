@@ -10,7 +10,7 @@ export default function UserPage() {
     // TODO: potentially separate posts list and friends list to their own component
     const { username } = useParams();
     const [user, setUser] = useState<UserModel>();
-    const [userFriends, setUserFriends] = useState<UserModel[]>([]);
+    const [userFollowing, setUserFollowing] = useState<UserModel[]>([]);
     const [userPosts, setUserPosts] = useState<PostModel[]>();
     const navigate = useNavigate();
     const loggedInUser = useContext(LoggedInUserContext);
@@ -22,7 +22,7 @@ export default function UserPage() {
                 const user = await response.json();
                 setUser(user);
 
-                fetchUserFriends();
+                fetchUserFollowing();
                 fetchUserPosts();
             } catch (error) {
                 navigate('/new-user/login');
@@ -30,11 +30,11 @@ export default function UserPage() {
             }
         }
 
-        async function fetchUserFriends() {
+        async function fetchUserFollowing() {
             try {
-                const response = await fetch(`http://localhost:3000/users/${username}/friends`);
-                const userFriends = await response.json();
-                setUserFriends(userFriends);
+                const response = await fetch(`http://localhost:3000/users/${username}/following`);
+                const users = await response.json();
+                setUserFollowing(users);
             } catch (error) {
                 console.error(error);
             }
@@ -178,11 +178,11 @@ export default function UserPage() {
                 </div>
                 <div className="col-4">
                     <div className="card">
-                        <div className="card-header"><h5>Following ({userFriends?.length})</h5></div>
+                        <div className="card-header"><h5>Following ({userFollowing?.length})</h5></div>
                         <ul className="list-group list-group-flush">
-                            {userFriends?.map(friend => (
-                                <li key={friend._id} className="list-group-item">
-                                    <Link to={`/user/${friend.username}`}>{friend.firstName} {friend.lastName}</Link>
+                            {userFollowing?.map(user => (
+                                <li key={user._id} className="list-group-item">
+                                    <Link to={`/user/${user.username}`}>{user.firstName} {user.lastName}</Link>
                                 </li>
                             ))}
                         </ul>

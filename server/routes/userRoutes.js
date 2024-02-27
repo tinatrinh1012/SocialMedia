@@ -64,7 +64,7 @@ userRouter.put('/:username/updateProfile', async (req, res) => {
     }
 })
 
-userRouter.get('/:username/friends', async (req, res) => {
+userRouter.get('/:username/following', async (req, res) => {
     try {
         const { username } = req.params;
         const pipeline = [
@@ -72,14 +72,14 @@ userRouter.get('/:username/friends', async (req, res) => {
             { $lookup:
                 {
                     from: 'Users',
-                    localField: 'friends',
+                    localField: 'following',
                     foreignField: 'username',
-                    as: 'aggregatedFriends'
+                    as: 'aggregatedFollowing'
                 }
             }
         ]
         const aggregatedUsers = await User.aggregate(pipeline);
-        res.status(200).json(aggregatedUsers[0].aggregatedFriends);
+        res.status(200).json(aggregatedUsers[0].aggregatedFollowing);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
