@@ -9,7 +9,7 @@ import { LoggedInUserContext } from "../App";
 export default function UserPage() {
     // TODO: potentially separate posts list and friends list to their own component
     const { username } = useParams();
-    const [user, setUser] = useState<UserModel>();
+    const [pageUser, setPageUser] = useState<UserModel>();
     const [userFollowing, setUserFollowing] = useState<UserModel[]>([]);
     const [userPosts, setUserPosts] = useState<PostModel[]>();
     const navigate = useNavigate();
@@ -20,7 +20,7 @@ export default function UserPage() {
             try {
                 const response = await fetch(`http://localhost:3000/users/${username}/profile`, {credentials: 'include'});
                 const user = await response.json();
-                setUser(user);
+                setPageUser(user);
 
                 fetchUserFollowing();
                 fetchUserPosts();
@@ -92,7 +92,7 @@ export default function UserPage() {
     }
 
     function isFriend() {
-        return user && loggedInUser.user?.following.includes(user.username);
+        return pageUser && loggedInUser.user?.following.includes(pageUser.username);
     }
 
     async function followUser() {
@@ -103,12 +103,12 @@ export default function UserPage() {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
-                body: JSON.stringify({friend: user?.username}),
+                body: JSON.stringify({friend: pageUser?.username}),
             })
 
             if (response.status === 200) {
                 let updatedLoggedInUser = {...loggedInUser.user} as UserModel;
-                updatedLoggedInUser?.following.push(user!.username);
+                updatedLoggedInUser?.following.push(pageUser!.username);
                 loggedInUser.setUser(updatedLoggedInUser);
             }
         } catch (error) {
@@ -124,12 +124,12 @@ export default function UserPage() {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
-                body: JSON.stringify({friend: user?.username}),
+                body: JSON.stringify({friend: pageUser?.username}),
             })
 
             if (response.status === 200) {
                 let updatedLoggedInUser = {...loggedInUser.user} as UserModel;
-                updatedLoggedInUser!.following = updatedLoggedInUser.following.filter(_ => _ !== user?.username);
+                updatedLoggedInUser!.following = updatedLoggedInUser.following.filter(_ => _ !== pageUser?.username);
                 loggedInUser.setUser(updatedLoggedInUser);
             }
         } catch (error) {
@@ -141,11 +141,11 @@ export default function UserPage() {
         <div className="container">
             <div className="d-flex justify-content-center mt-3">
                 <h2>
-                    {user?.firstName} {user?.lastName}
+                    {pageUser?.firstName} {pageUser?.lastName}
                 </h2>
             </div>
             <div className="d-flex justify-content-center mb-3">
-                {loggedInUser.user?.username !== user?.username ? (
+                {loggedInUser.user?.username !== pageUser?.username ? (
                     <>
                         {isFriend() ? (
                             <h3>
