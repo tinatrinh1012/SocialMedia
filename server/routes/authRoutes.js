@@ -46,7 +46,7 @@ authRouter.post('/signup', async (req, res) => {
             hashed_password: hashed_password,
             salt: salt
         })
-        const user = { username: req.body.username };
+        const user = await User.findOne({ username: req.body.username });
         req.login(user, (err) => {
             if (err) {
                 throw Error('Error loggin in')
