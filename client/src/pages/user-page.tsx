@@ -92,7 +92,7 @@ export default function UserPage() {
     }
 
     function isFriend() {
-        return user && loggedInUser.user?.friends.includes(user.username);
+        return user && loggedInUser.user?.following.includes(user.username);
     }
 
     async function followUser() {
@@ -108,7 +108,7 @@ export default function UserPage() {
 
             if (response.status === 200) {
                 let updatedLoggedInUser = {...loggedInUser.user} as UserModel;
-                updatedLoggedInUser?.friends.push(user!.username);
+                updatedLoggedInUser?.following.push(user!.username);
                 loggedInUser.setUser(updatedLoggedInUser);
             }
         } catch (error) {
@@ -129,7 +129,7 @@ export default function UserPage() {
 
             if (response.status === 200) {
                 let updatedLoggedInUser = {...loggedInUser.user} as UserModel;
-                updatedLoggedInUser!.friends = updatedLoggedInUser.friends.filter(_ => _ !== user?.username);
+                updatedLoggedInUser!.following = updatedLoggedInUser.following.filter(_ => _ !== user?.username);
                 loggedInUser.setUser(updatedLoggedInUser);
             }
         } catch (error) {

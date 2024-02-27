@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema(
         username: { type: String, unique: true },
         firstName: String,
         lastName: String,
-        friends: [String],
+        following: [String],
         hashed_password: Buffer,
         salt: Buffer
     },
