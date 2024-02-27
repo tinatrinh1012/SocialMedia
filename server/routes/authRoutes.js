@@ -51,7 +51,7 @@ authRouter.post('/signup', async (req, res) => {
             if (err) {
                 throw Error('Error loggin in')
             }
-            res.status(200).json({ message: 'New user sign up successful' });
+            res.status(200).json(user);
         })
     } catch (error) {
         res.status(400).json(error);

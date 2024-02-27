@@ -1,12 +1,13 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { LoggedInUserContext } from "../App";
 
 export default function SignUpPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-
+    const loggedInUser = useContext(LoggedInUserContext);
     const navigate = useNavigate();
 
     async function signup(e: FormEvent) {
@@ -28,6 +29,8 @@ export default function SignUpPage() {
 
             if (result.status === 200) {
                 navigate(`/user/${username}`);
+                const user = await result.json();
+                loggedInUser.setUser(user);
             }
         } catch (error) {
             console.error(error);
