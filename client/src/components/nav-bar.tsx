@@ -43,9 +43,6 @@ export default function NavBar() {
                                         <Link to={`/news-feed`} className="nav-link">News Feed</Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link to={`/user/${loggedInUser.user.username}`} className="nav-link">My Profile</Link>
-                                    </li>
-                                    <li className="nav-item">
                                         <Link to={'/find-users'} className="nav-link">Find Users</Link>
                                     </li>
                                     <li className="nav-item">
@@ -65,7 +62,11 @@ export default function NavBar() {
                         </ul>
                     </div>
                 </div>
-                <h1 className="navbar-brand mb-0">{ loggedInUser?.user?.firstName} { loggedInUser?.user?.lastName}</h1>
+                <h1 className="navbar-brand mb-0">
+                    <Link to={`/user/${loggedInUser?.user?.username}`} className="nav-link">
+                        { loggedInUser?.user?.firstName} { loggedInUser?.user?.lastName}
+                    </Link>
+                </h1>
             </nav>
         </div>
     )
