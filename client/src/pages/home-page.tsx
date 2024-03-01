@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { UserModel } from "../models/user";
 import { Link } from "react-router-dom";
 
-export default function HomePage() {
+export default function FindUsersPage() {
     const [users, setUsers] = useState<UserModel[]>();
 
     useEffect(() => {
@@ -21,9 +21,7 @@ export default function HomePage() {
 
     return (
         <>
-            <h2>Home page</h2>
-
-            <h3>Users</h3>
+            <h2 className="mt-3">Users</h2>
             <ul>
                 {users?.map((user) => (
                     <li key={user._id}>

@@ -40,10 +40,10 @@ export default function NavBar() {
                             {loggedInUser.user ? (
                                 <>
                                     <li className="nav-item">
-                                        <Link to={'/'} className="nav-link">Home</Link>
+                                        <Link to={`/user/${loggedInUser.user.username}`} className="nav-link">My Profile</Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link to={`/user/${loggedInUser.user.username}`} className="nav-link">My Profile</Link>
+                                        <Link to={'/find-users'} className="nav-link">Find Users</Link>
                                     </li>
                                     <li className="nav-item">
                                         <button className="nav-link" onClick={logout}>Log out</button>

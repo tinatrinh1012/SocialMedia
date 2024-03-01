@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom"
-import HomePage from "./pages/home-page";
+import FindUsersPage from "./pages/home-page";
 import ErrorPage from "./pages/error-page";
 import UserPage from "./pages/user-page";
 import LoginPage from "./pages/login-page";
@@ -13,9 +13,8 @@ const Router = createBrowserRouter([
 		errorElement: <ErrorPage />,
 		children: [
 			{
-				path: "",
-				element: <HomePage />,
-
+				path: "find-users",
+				element: <FindUsersPage />
 			},
 			{
 				path: "user/:username",
