@@ -7,9 +7,9 @@ postRouter.get('/:username', async (req, res) => {
     try {
         const { username } = req.params;
         const posts = await Post.find({ createdBy: username }).sort({ createdAt: -1 });
-        res.status(200).json(posts);
+        return res.status(200).json(posts);
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        return res.status(400).json({ error: error.message });
     }
 })
 
@@ -17,9 +17,9 @@ postRouter.get('/', async (req, res) => {
     try {
         const { _id } = req.query;
         const post = await Post.findById(_id);
-        res.status(200).json(post);
+        return res.status(200).json(post);
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        return res.status(400).json({ error: error.message });
     }
 })
 
@@ -42,9 +42,9 @@ postRouter.post('/:username/create', async (req, res) => {
             text: text,
             likes: []
         });
-        res.status(201).json(createdPost);
+        return res.status(201).json(createdPost);
     } catch (error) {
-        res.status(400).json(error);
+        return res.status(400).json(error);
     }
 })
 
@@ -67,9 +67,9 @@ postRouter.put('/:_id/update', async (req, res) => {
             throw Error('Unable to update post. Make sure you are authenticated as post owner to edit post');
         }
 
-        res.status(200).json(updatedPost);
+        return res.status(200).json(updatedPost);
     } catch (error) {
-        res.status(400).json(error);
+        return res.status(400).json(error);
     }
 })
 
@@ -78,9 +78,9 @@ postRouter.delete('/:_id/delete', async (req, res) => {
     try {
         const { _id } = req.params;
         await Post.findOneAndDelete({ _id: _id })
-        res.status(200).json({ message: "Successfully deleted post" })
+        return res.status(200).json({ message: "Successfully deleted post" })
     } catch (error) {
-        res.status(400).json({ error: error.message })
+        return res.status(400).json({ error: error.message })
     }
 })
 
@@ -96,9 +96,9 @@ postRouter.put('/:_id/like', async (req, res) => {
         post.likes.push(req.user.username);
         await post.save();
 
-        res.status(200).json({ message: 'Liked post successfully' });
+        return res.status(200).json({ message: 'Liked post successfully' });
     } catch (error) {
-        res.status(400).json(error);
+        return res.status(400).json(error);
     }
 })
 
@@ -114,9 +114,9 @@ postRouter.put('/:_id/unlike', async (req, res) => {
         post.likes = post.likes.filter(username => username !== req.user.username);
         await post.save();
 
-        res.status(200).json({ message: 'Unliked post successfully' });
+        return res.status(200).json({ message: 'Unliked post successfully' });
     } catch (error) {
-        res.status(400).json(error);
+        return res.status(400).json(error);
     }
 })
 
