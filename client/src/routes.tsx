@@ -5,6 +5,7 @@ import UserPage from "./pages/user-page";
 import LoginPage from "./pages/login-page";
 import SignUpPage from "./pages/signup-page";
 import App from "./App";
+import NewsFeedPage from "./pages/news-feed-page";
 
 const Router = createBrowserRouter([
 	{
@@ -12,6 +13,10 @@ const Router = createBrowserRouter([
 		element: <App/>,
 		errorElement: <ErrorPage />,
 		children: [
+			{
+				path: "news-feed",
+				element: <NewsFeedPage />
+			},
 			{
 				path: "find-users",
 				element: <FindUsersPage />

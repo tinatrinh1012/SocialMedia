@@ -40,6 +40,9 @@ export default function NavBar() {
                             {loggedInUser.user ? (
                                 <>
                                     <li className="nav-item">
+                                        <Link to={`/news-feed`} className="nav-link">News Feed</Link>
+                                    </li>
+                                    <li className="nav-item">
                                         <Link to={`/user/${loggedInUser.user.username}`} className="nav-link">My Profile</Link>
                                     </li>
                                     <li className="nav-item">
