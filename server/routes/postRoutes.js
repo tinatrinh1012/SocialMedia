@@ -120,9 +120,16 @@ postRouter.put('/:_id/unlike', async (req, res) => {
     }
 })
 
-postRouter.get('/news-feed', (req, res) => {
+postRouter.get('/news-feed', async (req, res) => {
     try {
-        console.log('/news-feed')
+        if (req.user == null) {
+            throw Error('Not authenticated');
+        }
+        const pipeline = [
+            { $match: { createdBy: { $in: req.user.following } } }
+        ]
+        const followingUserPosts = await Post.aggregate(pipeline).sort({ createdAt: -1 });
+        return res.status(200).json(followingUserPosts);
     } catch (error) {
 
     }
