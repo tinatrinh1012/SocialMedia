@@ -42,7 +42,7 @@ export default function UserPage() {
 
         async function fetchUserPosts() {
             try {
-                const response = await fetch(`http://localhost:3000/posts/${username}`);
+                const response = await fetch(`http://localhost:3000/posts/username?username=${username}`);
                 const userPosts = await response.json();
                 setUserPosts(userPosts);
             } catch (error) {

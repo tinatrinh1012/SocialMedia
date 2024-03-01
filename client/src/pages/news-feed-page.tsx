@@ -7,7 +7,7 @@ export default function NewsFeedPage() {
     useEffect(() => {
         async function getUserNewsFeed() {
             try {
-                const response = await fetch('http://localhost:3000/posts/news', { credentials: 'include'});
+                const response = await fetch('http://localhost:3000/posts/news-feed', { credentials: 'include'});
             } catch (error) {
 
             }

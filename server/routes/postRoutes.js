@@ -3,9 +3,9 @@ import Post from '../models/Post.js';
 
 const postRouter = express.Router();
 
-postRouter.get('/:username', async (req, res) => {
+postRouter.get('/username', async (req, res) => {
     try {
-        const { username } = req.params;
+        const { username } = req.query;
         const posts = await Post.find({ createdBy: username }).sort({ createdAt: -1 });
         return res.status(200).json(posts);
     } catch (error) {
@@ -13,7 +13,7 @@ postRouter.get('/:username', async (req, res) => {
     }
 })
 
-postRouter.get('/', async (req, res) => {
+postRouter.get('/id', async (req, res) => {
     try {
         const { _id } = req.query;
         const post = await Post.findById(_id);
@@ -117,6 +117,14 @@ postRouter.put('/:_id/unlike', async (req, res) => {
         return res.status(200).json({ message: 'Unliked post successfully' });
     } catch (error) {
         return res.status(400).json(error);
+    }
+})
+
+postRouter.get('/news-feed', (req, res) => {
+    try {
+        console.log('/news-feed')
+    } catch (error) {
+
     }
 })
 
