@@ -11,7 +11,7 @@ export default function LoginPage() {
     async function login(e: FormEvent) {
         e.preventDefault();
         try {
-            const result = await fetch(`http://localhost:3000/auth/login`, {
+            const result = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

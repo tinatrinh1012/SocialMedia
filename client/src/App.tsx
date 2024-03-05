@@ -18,7 +18,6 @@ export default function App() {
     useEffect(() => {
         async function getLoggedInUser() {
             console.log("fetch current user");
-            console.log(process.env.REACT_APP_BASE_URL);
             const response = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/current-user`, { credentials: 'include' });
             if (response.status === 200) {
                 const user = await response.json();
