@@ -18,7 +18,7 @@ export default function App() {
     useEffect(() => {
         async function getLoggedInUser() {
             console.log("fetch current user");
-            const response = await fetch('http://localhost:3000/auth/current-user', { credentials: 'include' });
+            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/current-user`, { credentials: 'include' });
             if (response.status === 200) {
                 const user = await response.json();
                 setUser(user);
