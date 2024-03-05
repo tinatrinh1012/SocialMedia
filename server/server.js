@@ -14,7 +14,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors({
     credentials: true,
-    origin: 'http://localhost:3001'
+    origin: process.env.CLIENT_DOMAIN || 'http://localhost:3001'
 }));
 
 // Load environment variables
