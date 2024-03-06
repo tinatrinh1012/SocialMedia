@@ -5,41 +5,19 @@ import { PostModel } from "../models/post";
 import Post from "../components/post";
 import CreatePost from "../components/create-post";
 import { LoggedInUserContext } from "../App";
+import { useGet } from "../hooks/useGet";
+import { Response } from "../models/Response";
 
 export default function UserPage() {
     // TODO: separate posts list and following list to their own component
     const { username } = useParams();
-    const [pageUser, setPageUser] = useState<UserModel>();
-    const [userFollowing, setUserFollowing] = useState<UserModel[]>([]);
+    const pageUser: Response<UserModel> = useGet<UserModel>(`/users/${username}/profile`);
+    const userFollowing: Response<UserModel[]> = useGet<UserModel[]>(`/users/${username}/following`);
     const [userPosts, setUserPosts] = useState<PostModel[]>();
     const navigate = useNavigate();
     const loggedInUser = useContext(LoggedInUserContext);
 
     useEffect(() => {
-        async function fetchUser() {
-            try {
-                const response = await fetch(`http://localhost:3000/users/${username}/profile`, {credentials: 'include'});
-                const user = await response.json();
-                setPageUser(user);
-
-                fetchUserFollowing();
-                fetchUserPosts();
-            } catch (error) {
-                navigate('/new-user/login');
-                window.alert(`You're not authenticated. Please log in with username ${username}`);
-            }
-        }
-
-        async function fetchUserFollowing() {
-            try {
-                const response = await fetch(`http://localhost:3000/users/${username}/following`);
-                const users = await response.json();
-                setUserFollowing(users);
-            } catch (error) {
-                console.error(error);
-            }
-        }
-
         async function fetchUserPosts() {
             try {
                 const response = await fetch(`http://localhost:3000/posts/username?username=${username}`);
@@ -50,7 +28,7 @@ export default function UserPage() {
             }
         }
 
-        fetchUser();
+        fetchUserPosts();
     }, [navigate, username])
 
     function onPostCreate(createdPost: PostModel) {
@@ -92,7 +70,7 @@ export default function UserPage() {
     }
 
     function isFollowing() {
-        return pageUser && loggedInUser.user?.following.includes(pageUser.username);
+        return pageUser && loggedInUser.user?.following.includes(pageUser.data.username);
     }
 
     async function followUser() {
@@ -103,12 +81,12 @@ export default function UserPage() {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
-                body: JSON.stringify({ followingUsername: pageUser?.username }),
+                body: JSON.stringify({ followingUsername: pageUser.data.username }),
             })
 
             if (response.status === 200) {
                 let updatedLoggedInUser = {...loggedInUser.user} as UserModel;
-                updatedLoggedInUser?.following.push(pageUser!.username);
+                updatedLoggedInUser?.following.push(pageUser.data.username);
                 loggedInUser.setUser(updatedLoggedInUser);
             }
         } catch (error) {
@@ -124,12 +102,12 @@ export default function UserPage() {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
-                body: JSON.stringify({ followingUsername: pageUser?.username }),
+                body: JSON.stringify({ followingUsername: pageUser.data.username }),
             })
 
             if (response.status === 200) {
                 let updatedLoggedInUser = {...loggedInUser.user} as UserModel;
-                updatedLoggedInUser!.following = updatedLoggedInUser.following.filter(_ => _ !== pageUser?.username);
+                updatedLoggedInUser!.following = updatedLoggedInUser.following.filter(_ => _ !== pageUser.data.username);
                 loggedInUser.setUser(updatedLoggedInUser);
             }
         } catch (error) {
@@ -141,11 +119,11 @@ export default function UserPage() {
         <div className="container">
             <div className="d-flex justify-content-center mt-3">
                 <h2>
-                    {pageUser?.firstName} {pageUser?.lastName}
+                    {pageUser.data.firstName} {pageUser.data.lastName}
                 </h2>
             </div>
             <div className="d-flex justify-content-center mb-3">
-                {loggedInUser.user?.username !== pageUser?.username ? (
+                {loggedInUser.user?.username !== pageUser.data.username ? (
                     <>
                         {isFollowing() ? (
                             <h3>
@@ -178,9 +156,9 @@ export default function UserPage() {
                 </div>
                 <div className="col-4">
                     <div className="card">
-                        <div className="card-header"><h5>Following ({userFollowing?.length})</h5></div>
+                        <div className="card-header"><h5>Following ({userFollowing.data.length})</h5></div>
                         <ul className="list-group list-group-flush">
-                            {userFollowing?.map(user => (
+                            {userFollowing.data && userFollowing.data.map(user => (
                                 <li key={user._id} className="list-group-item">
                                     <Link to={`/user/${user.username}`}>{user.firstName} {user.lastName}</Link>
                                 </li>
