@@ -63,7 +63,7 @@ export default function NavBar() {
                     </div>
                 </div>
                 <h1 className="navbar-brand mb-0">
-                    <Link to={`/user/${loggedInUser?.user?.username}`} className="nav-link">
+                    <Link reloadDocument to={`/user/${loggedInUser?.user?.username}`} className="nav-link">
                         { loggedInUser?.user?.firstName} { loggedInUser?.user?.lastName}
                     </Link>
                 </h1>

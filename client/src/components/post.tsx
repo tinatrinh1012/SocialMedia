@@ -89,8 +89,8 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
     }
 
     function liked(): boolean {
-        if (loggedInUser) {
-            return post.likes.indexOf(loggedInUser.user!.username) > -1;
+        if (loggedInUser.user) {
+            return post.likes.indexOf(loggedInUser.user.username) > -1;
         }
         return false;
     }
@@ -162,7 +162,7 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
             <div className="col">
                 <div className="card">
                     <h5 className="card-header">
-                        <Link to={`/user/${post.createdBy}`}>{ post.createdBy }</Link>
+                        <Link reloadDocument to={`/user/${post.createdBy}`}>{ post.createdBy }</Link>
                     </h5>
                     <div className="card-body">
                         { editMode ? (
@@ -225,7 +225,7 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
                         {comments?.map(comment => (
                             <div key={comment._id}>
                                 <h6 className="mb-0">
-                                    <Link to={`/user/${comment.createdBy}`}>{comment.createdBy}</Link>
+                                    <Link reloadDocument to={`/user/${comment.createdBy}`}>{comment.createdBy}</Link>
                                 </h6>
                                 <p>{comment.text}</p>
                             </div>
