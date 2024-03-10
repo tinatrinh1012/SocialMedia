@@ -3,7 +3,7 @@ import { Response } from "../models/Response";
 
 export function useGet<T>(url: string): Response<T> {
     const [status, setStatus] = useState<number>(0);
-    const [data, setData] = useState<T>(0 as unknown as T);
+    const [data, setData] = useState<T>(undefined as unknown as T);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<any>();
 
