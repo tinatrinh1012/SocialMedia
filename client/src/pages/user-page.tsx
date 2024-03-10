@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { useContext } from "react";
+import { Link, useParams } from "react-router-dom"
 import { UserModel } from "../models/user";
 import { PostModel } from "../models/post";
 import Post from "../components/post";
@@ -13,24 +13,8 @@ export default function UserPage() {
     const { username } = useParams();
     const pageUserResponse: Response<UserModel> = useGet<UserModel>(`/users/${username}/profile`);
     const userFollowingResponse: Response<UserModel[]> = useGet<UserModel[]>(`/users/${username}/following`);
-    const userPostsResponse: Response<PostModel[]> = useGet<PostModel[]>(`/posts/username?username=${username}`);
-    const [userPosts, setUserPosts] = useState<PostModel[]>(userPostsResponse.data);
-    const navigate = useNavigate();
+    const { data: userPosts, setData: setUserPosts } = useGet<PostModel[]>(`/posts/username?username=${username}`);
     const loggedInUser = useContext(LoggedInUserContext);
-
-    useEffect(() => {
-        async function fetchUserPosts() {
-            try {
-                const response = await fetch(`http://localhost:3000/posts/username?username=${username}`);
-                const userPosts = await response.json();
-                setUserPosts(userPosts);
-            } catch (error) {
-                console.error(error);
-            }
-        }
-
-        fetchUserPosts();
-    }, [navigate, username])
 
     function onPostCreate(createdPost: PostModel) {
         if (userPosts) {
