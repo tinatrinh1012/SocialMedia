@@ -4,6 +4,7 @@ import { CommentModel } from "../models/comment";
 import { LoggedInUserContext } from "../App";
 import "./post.css";
 import { Link } from "react-router-dom";
+import { useGet } from "../hooks/useGet";
 
 interface PostProps {
     post: PostModel;
@@ -12,25 +13,11 @@ interface PostProps {
 }
 
 export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
-    const [comments, setComments] = useState<CommentModel[]>([]);
+    const { data: comments, setData: setComments } = useGet<CommentModel[]>(`/comments/${post._id}`);
     const [editMode, setEditMode ] = useState<boolean>(false);
     const [editText, setEditText] = useState<string>(post.text);
     const [commentText, setCommentText] = useState<string>('');
     const loggedInUser = useContext(LoggedInUserContext);
-
-    useEffect(() => {
-        async function fetchPostComments() {
-            try {
-                const response = await fetch(`http://localhost:3000/comments/${post._id}`);
-                const comments = await response.json();
-                setComments(comments);
-            } catch (error) {
-                console.error(error);
-            }
-        }
-
-        fetchPostComments();
-    }, [post._id])
 
     // TODO: add delete confirmation popup dialog
     async function deletePost() {
@@ -218,7 +205,7 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
                                     <><i onClick={likePost} className="bi bi-suit-heart like-icon"></i> { post.likes.length }</>
                                 )}
 
-                                <i className="bi bi-chat ms-3"></i> {comments.length}
+                                <i className="bi bi-chat ms-3"></i> {comments?.length}
                             </div>
                         </h6>
 
