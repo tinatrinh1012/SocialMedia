@@ -11,9 +11,10 @@ import { Response } from "../models/Response";
 export default function UserPage() {
     // TODO: separate posts list and following list to their own component
     const { username } = useParams();
-    const pageUser: Response<UserModel> = useGet<UserModel>(`/users/${username}/profile`);
-    const userFollowing: Response<UserModel[]> = useGet<UserModel[]>(`/users/${username}/following`);
-    const [userPosts, setUserPosts] = useState<PostModel[]>();
+    const pageUserResponse: Response<UserModel> = useGet<UserModel>(`/users/${username}/profile`);
+    const userFollowingResponse: Response<UserModel[]> = useGet<UserModel[]>(`/users/${username}/following`);
+    const userPostsResponse: Response<PostModel[]> = useGet<PostModel[]>(`/posts/username?username=${username}`);
+    const [userPosts, setUserPosts] = useState<PostModel[]>(userPostsResponse.data);
     const navigate = useNavigate();
     const loggedInUser = useContext(LoggedInUserContext);
 
@@ -41,7 +42,7 @@ export default function UserPage() {
 
     async function onPostUpdate(_id: string) {
         try {
-            const response = await fetch(`http://localhost:3000/posts?_id=${_id}`);
+            const response = await fetch(`http://localhost:3000/posts/id?_id=${_id}`);
             const updatedPost = await response.json();
 
             if (userPosts) {
@@ -70,7 +71,7 @@ export default function UserPage() {
     }
 
     function isFollowing() {
-        return pageUser && loggedInUser.user?.following.includes(pageUser.data.username);
+        return pageUserResponse && loggedInUser.user?.following.includes(pageUserResponse.data.username);
     }
 
     async function followUser() {
@@ -81,12 +82,12 @@ export default function UserPage() {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
-                body: JSON.stringify({ followingUsername: pageUser.data.username }),
+                body: JSON.stringify({ followingUsername: pageUserResponse.data.username }),
             })
 
             if (response.status === 200) {
                 let updatedLoggedInUser = {...loggedInUser.user} as UserModel;
-                updatedLoggedInUser?.following.push(pageUser.data.username);
+                updatedLoggedInUser?.following.push(pageUserResponse.data.username);
                 loggedInUser.setUser(updatedLoggedInUser);
             }
         } catch (error) {
@@ -102,12 +103,12 @@ export default function UserPage() {
                     'Content-Type': 'application/json',
                 },
                 credentials: 'include',
-                body: JSON.stringify({ followingUsername: pageUser.data.username }),
+                body: JSON.stringify({ followingUsername: pageUserResponse.data.username }),
             })
 
             if (response.status === 200) {
                 let updatedLoggedInUser = {...loggedInUser.user} as UserModel;
-                updatedLoggedInUser!.following = updatedLoggedInUser.following.filter(_ => _ !== pageUser.data.username);
+                updatedLoggedInUser!.following = updatedLoggedInUser.following.filter(_ => _ !== pageUserResponse.data.username);
                 loggedInUser.setUser(updatedLoggedInUser);
             }
         } catch (error) {
@@ -119,11 +120,11 @@ export default function UserPage() {
         <div className="container">
             <div className="d-flex justify-content-center mt-3">
                 <h2>
-                    {pageUser.data.firstName} {pageUser.data.lastName}
+                    {pageUserResponse.data.firstName} {pageUserResponse.data.lastName}
                 </h2>
             </div>
             <div className="d-flex justify-content-center mb-3">
-                {loggedInUser.user?.username !== pageUser.data.username ? (
+                {loggedInUser.user?.username !== pageUserResponse.data.username ? (
                     <>
                         {isFollowing() ? (
                             <h3>
@@ -146,7 +147,7 @@ export default function UserPage() {
             </div>
             <div className="row">
                 <div className="col-8">
-                    {userPosts?.map(post => (
+                    {userPosts && userPosts.map(post => (
                         <Post
                             key={post._id}
                             post={post}
@@ -156,9 +157,9 @@ export default function UserPage() {
                 </div>
                 <div className="col-4">
                     <div className="card">
-                        <div className="card-header"><h5>Following ({userFollowing.data.length})</h5></div>
+                        <div className="card-header"><h5>Following ({userFollowingResponse.data.length})</h5></div>
                         <ul className="list-group list-group-flush">
-                            {userFollowing.data && userFollowing.data.map(user => (
+                            {userFollowingResponse.data && userFollowingResponse.data.map(user => (
                                 <li key={user._id} className="list-group-item">
                                     <Link reloadDocument to={`/user/${user.username}`}>{user.firstName} {user.lastName}</Link>
                                 </li>
