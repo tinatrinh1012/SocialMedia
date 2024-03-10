@@ -131,17 +131,15 @@ export default function UserPage() {
                         </div>
                     </div>
                     <div className="row">
-                        {userPosts &&
-                            <div className="col-8">
-                                {userPosts.map(post => (
-                                    <Post
-                                        key={post._id}
-                                        post={post}
-                                        onPostDelete={onPostDelete}
-                                        onPostUpdate={onPostUpdate}></Post>
-                                ))}
-                            </div>
-                        }
+                        <div className="col-8">
+                            {userPosts && userPosts.map(post => (
+                                <Post
+                                    key={post._id}
+                                    post={post}
+                                    onPostDelete={onPostDelete}
+                                    onPostUpdate={onPostUpdate}></Post>
+                            ))}
+                        </div>
                         {userFollowing &&
                             <div className="col-4">
                                 <div className="card">
