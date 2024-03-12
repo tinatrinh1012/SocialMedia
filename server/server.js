@@ -14,7 +14,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors({
     credentials: true,
-    origin: process.env.CLIENT_DOMAIN || 'http://localhost:3001'
+    origin: process.env.CLIENT_DOMAIN
 }));
 
 // Load environment variables
@@ -40,5 +40,5 @@ app.use('/comments', commentRouter);
 // Start the server
 app.listen(port, () => {
     connectDB();
-    console.log(`Server is running at http://localhost:${port}`);
+    console.log(`Server is running at ${process.env.CLIENT_DOMAIN}`);
 });
