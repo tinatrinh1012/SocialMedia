@@ -212,7 +212,7 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
                         {comments?.map(comment => (
                             <div key={comment._id}>
                                 <h6 className="mb-0">
-                                    <Link to={`/user/${comment.createdBy}`}>{comment.createdBy}</Link>
+                                    <Link reloadDocument to={`/user/${comment.createdBy}`}>{comment.createdBy}</Link>
                                 </h6>
                                 <p>{comment.text}</p>
                             </div>
