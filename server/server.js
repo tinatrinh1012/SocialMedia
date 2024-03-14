@@ -21,11 +21,13 @@ app.use(cors({
 dotenv.config({ path: "./config.env" });
 const port = process.env.PORT;
 
+app.enable('trust proxy');
 app.use(session({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: false,
     cookie: {
+        httpOnly: true,
         maxAge: 1800000,
         secure: app.get('env') === 'production' ? true : false,
         sameSite: 'none'
