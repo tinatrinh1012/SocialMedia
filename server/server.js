@@ -27,7 +27,8 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         maxAge: 1800000,
-        secure: app.get('env') === 'production' ? true : false
+        secure: app.get('env') === 'production' ? true : false,
+        sameSite: 'none'
     }
 }))
 
