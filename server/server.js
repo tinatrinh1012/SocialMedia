@@ -30,7 +30,7 @@ app.use(session({
         httpOnly: true,
         maxAge: 1800000,
         secure: app.get('env') === 'production' ? true : false,
-        sameSite: 'none'
+        sameSite: app.get('env') === 'production' ? 'none' : 'lax'
     }
 }))
 
