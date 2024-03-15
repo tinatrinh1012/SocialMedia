@@ -1,23 +1,9 @@
-import { useEffect, useState } from "react"
 import { UserModel } from "../models/user";
 import { Link } from "react-router-dom";
+import { useGet } from "../hooks/useGet";
 
 export default function FindUsersPage() {
-    const [users, setUsers] = useState<UserModel[]>();
-
-    useEffect(() => {
-        async function fetchUsers() {
-            try {
-                const response = await fetch('http://localhost:3000/users');
-                const users: UserModel[] = await response.json();
-                setUsers(users);
-            } catch (error) {
-
-            }
-        }
-
-        fetchUsers();
-    }, [])
+    const { data: users } = useGet<UserModel[]>('/users');
 
     return (
         <>
