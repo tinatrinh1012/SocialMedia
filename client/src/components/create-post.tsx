@@ -16,7 +16,7 @@ export default function CreatePost({ username, onPostCreate }: Props) {
     async function handleSubmit(e: FormEvent) {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:3000/posts/${username}/create`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/posts/${username}/create`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

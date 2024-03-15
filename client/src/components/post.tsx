@@ -22,7 +22,7 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
     // TODO: add delete confirmation popup dialog
     async function deletePost() {
         try {
-            const response = await fetch(`http://localhost:3000/posts/${post._id}/delete`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/posts/${post._id}/delete`, {
                 method: 'DELETE'
             })
 
@@ -50,7 +50,7 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
                 throw new Error('Post text cannot be empty');
             }
 
-            const response = await fetch(`http://localhost:3000/posts/${post._id}/update`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/posts/${post._id}/update`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
 
     async function likePost() {
         try {
-            const response = await fetch(`http://localhost:3000/posts/${post._id}/like`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/posts/${post._id}/like`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -106,7 +106,7 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
 
     async function unlikePost() {
         try {
-            const response = await fetch(`http://localhost:3000/posts/${post._id}/unlike`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/posts/${post._id}/unlike`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -124,7 +124,7 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
 
     async function addComment() {
         try {
-            const response = await fetch(`http://localhost:3000/comments/create`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/comments/create`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

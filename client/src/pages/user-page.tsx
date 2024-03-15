@@ -25,7 +25,7 @@ export default function UserPage() {
 
     async function onPostUpdate(_id: string) {
         try {
-            const response = await fetch(`http://localhost:3000/posts/id?_id=${_id}`);
+            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/posts/id?_id=${_id}`);
             const updatedPost = await response.json();
 
             if (userPosts) {
@@ -59,7 +59,7 @@ export default function UserPage() {
 
     async function followUser() {
         try {
-            const response = await fetch(`http://localhost:3000/users/${loggedInUser.user?.username}/following/add`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/users/${loggedInUser.user?.username}/following/add`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ export default function UserPage() {
 
     async function unfollowUser() {
         try {
-            const response = await fetch(`http://localhost:3000/users/${loggedInUser.user?.username}/following/remove`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/users/${loggedInUser.user?.username}/following/remove`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

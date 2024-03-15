@@ -8,7 +8,7 @@ export default function NavBar() {
 
     async function logout(e: FormEvent) {
         try {
-            const result = await fetch(`http://localhost:3000/auth/logout`, {
+            const result = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/logout`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

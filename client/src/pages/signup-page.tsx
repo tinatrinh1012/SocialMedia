@@ -13,7 +13,7 @@ export default function SignUpPage() {
     async function signup(e: FormEvent) {
         e.preventDefault();
         try {
-            const result = await fetch(`http://localhost:3000/auth/signup`, {
+            const result = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/signup`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
