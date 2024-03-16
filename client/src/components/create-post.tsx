@@ -1,5 +1,6 @@
-import { ChangeEvent, FormEvent, useState } from "react"
+import { ChangeEvent, FormEvent, useEffect, useState } from "react"
 import { PostModel } from "../models/post";
+import { usePost } from "../hooks/usePost";
 
 interface Props {
     username: string;
@@ -8,6 +9,14 @@ interface Props {
 
 export default function CreatePost({ username, onPostCreate }: Props) {
     const [text, setText] = useState<string>();
+    const { sendRequest: submitPost, status, data: createdPost } = usePost<PostModel>(`/posts/${username}/create`, {text: text});
+
+    useEffect(() => {
+        if (status === 201) {
+            onPostCreate(createdPost);
+            setText('');
+        }
+    }, [createdPost, onPostCreate, status])
 
     function handleTextChange(e: ChangeEvent<HTMLTextAreaElement>) {
         setText(e.target.value);
@@ -15,24 +24,7 @@ export default function CreatePost({ username, onPostCreate }: Props) {
 
     async function handleSubmit(e: FormEvent) {
         e.preventDefault();
-        try {
-            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/posts/${username}/create`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-                body: JSON.stringify({text: text}),
-            })
-
-            if (response.status === 201) {
-                const createdPost = await response.json();
-                onPostCreate(createdPost);
-                setText('');
-            }
-        } catch (error) {
-            console.error(error);
-        }
+        submitPost();
     }
 
     return (

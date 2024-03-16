@@ -25,5 +25,5 @@ export function useGet<T>(url: string): Response<T> {
         get();
     }, [get])
 
-    return { status, data, setData, loading, error }
+    return { sendRequest: get, status, data, setData, loading, error }
 }

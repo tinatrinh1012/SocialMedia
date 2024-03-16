@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { Link, useParams } from "react-router-dom"
 import { UserModel } from "../models/user";
 import { PostModel } from "../models/post";
@@ -15,13 +15,9 @@ export default function UserPage() {
     const { data: userPosts, setData: setUserPosts } = useGet<PostModel[]>(`/posts/username?username=${username}`);
     const loggedInUser = useContext(LoggedInUserContext);
 
-    function onPostCreate(createdPost: PostModel) {
-        if (userPosts) {
-            setUserPosts([createdPost, ...userPosts]);
-        } else {
-            setUserPosts([createdPost]);
-        }
-    }
+    const onPostCreate = useCallback((createdPost: PostModel) => {
+        setUserPosts(currentPosts => [createdPost, ...currentPosts])
+    }, [])
 
     async function onPostUpdate(_id: string) {
         try {
