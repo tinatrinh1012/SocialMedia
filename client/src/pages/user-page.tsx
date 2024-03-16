@@ -147,7 +147,7 @@ export default function UserPage() {
                                     <ul className="list-group list-group-flush">
                                         {userFollowing.map(user => (
                                             <li key={user._id} className="list-group-item">
-                                                <Link reloadDocument to={`/user/${user.username}`}>{user.firstName} {user.lastName}</Link>
+                                                <Link to={`/user/${user.username}`}>{user.firstName} {user.lastName}</Link>
                                             </li>
                                         ))}
                                     </ul>

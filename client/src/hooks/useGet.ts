@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Response } from "../models/Response";
 
 export function useGet<T>(url: string): Response<T> {
@@ -7,7 +7,7 @@ export function useGet<T>(url: string): Response<T> {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<any>();
 
-    async function get() {
+    const get = useCallback(async () => {
         console.log('get', url);
         setLoading(true);
         try {
@@ -19,11 +19,11 @@ export function useGet<T>(url: string): Response<T> {
             setError(error);
         }
         setLoading(false);
-    }
+    }, [url])
 
     useEffect(() => {
         get();
-    }, [])
+    }, [get])
 
     return { status, data, setData, loading, error }
 }
