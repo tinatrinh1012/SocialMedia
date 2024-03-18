@@ -1,35 +1,26 @@
-import { FormEvent, useContext, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoggedInUserContext } from "../App";
+import { usePost } from "../hooks/usePost";
+import { UserModel } from "../models/user";
 
 export default function LoginPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
     const loggedInUser = useContext(LoggedInUserContext);
+    const { sendRequest: sendLoginRequest, data: loginUser, status: loginStatus } = usePost<UserModel>(`/auth/login`, { username: username, password: password });
+
+    useEffect(() => {
+        if (loginStatus === 200) {
+            navigate(`/user/${username}`);
+            loggedInUser.setUser(loginUser);
+        }
+    }, [loggedInUser, loginStatus, loginUser, navigate, username])
 
     async function login(e: FormEvent) {
         e.preventDefault();
-        try {
-            const result = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-                body: JSON.stringify({ username: username, password: password }),
-            })
-
-            if (result.status === 200) {
-                navigate(`/user/${username}`);
-                const user = await result.json();
-                loggedInUser.setUser(user);
-            } else {
-                window.alert('Unable to log in');
-            }
-        } catch (error) {
-            console.error(error);
-        }
+        sendLoginRequest();
     }
 
     return (

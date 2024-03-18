@@ -24,7 +24,7 @@ export default function App() {
                 setUser(user);
 
                 if (location.pathname.includes('login')) {
-                    navigate('/');
+                    navigate('/news-feed');
                 }
             } else {
                 navigate('/login');
