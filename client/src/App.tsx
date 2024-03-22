@@ -28,6 +28,8 @@ export default function App() {
         getLoggedInUser();
     }, [navigate])
 
+    // TODO: understand why need useMemo for context value
+    // while passing {user, setUser} straight to provider value would cause infinite loop re-rendering
     // memoize the full context value
     const userContextValue = useMemo(() => ({
         user,
