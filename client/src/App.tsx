@@ -1,6 +1,6 @@
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import NavBar from "./components/nav-bar";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useMemo, useState } from "react";
 import { UserModel } from "./models/user";
 
 type UserContextType = {
@@ -28,9 +28,15 @@ export default function App() {
         getLoggedInUser();
     }, [navigate])
 
+    // memoize the full context value
+    const userContextValue = useMemo(() => ({
+        user,
+        setUser,
+    }), [user, setUser])
+
     return (
         <>
-            <LoggedInUserContext.Provider value={{user, setUser}}>
+            <LoggedInUserContext.Provider value={userContextValue}>
                 <div className="sticky-top">
                     <NavBar/>
                 </div>
