@@ -13,10 +13,10 @@ export default function LoginPage() {
 
     useEffect(() => {
         if (loginStatus === 200) {
-            navigate(`/user/${username}`);
+            navigate(`/news-feed`);
             loggedInUser.setUser(loginUser);
         }
-    }, [loggedInUser, loginStatus, loginUser, navigate, username])
+    }, [loginStatus, loginUser, navigate])
 
     async function login(e: FormEvent) {
         e.preventDefault();

@@ -13,7 +13,6 @@ export const LoggedInUserContext = createContext<UserContextType>({user: null, s
 export default function App() {
     const [user, setUser] = useState<UserModel | null>();
     const navigate = useNavigate();
-    const location = useLocation();
 
     useEffect(() => {
         async function getLoggedInUser() {
@@ -22,19 +21,12 @@ export default function App() {
             if (response.status === 200) {
                 const user = await response.json();
                 setUser(user);
-
-                if (location.pathname.includes('login')) {
-                    navigate('/news-feed');
-                }
             } else {
                 navigate('/login');
             }
         }
-
-        if (user == null) {
-            getLoggedInUser();
-        }
-    }, [navigate, user])
+        getLoggedInUser();
+    }, [navigate])
 
     return (
         <>

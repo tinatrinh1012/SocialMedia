@@ -1,30 +1,23 @@
-import { FormEvent, useContext } from "react";
+import { FormEvent, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { LoggedInUserContext } from "../App";
+import { usePost } from "../hooks/usePost";
 
 export default function NavBar() {
     const navigate = useNavigate();
     const loggedInUser = useContext(LoggedInUserContext);
+    const { sendRequest: sendLogoutRequest, status: logoutStatus } = usePost<any>(`/auth/logout`);
+
+    useEffect(() => {
+        if (logoutStatus === 200) {
+            navigate('/login');
+            loggedInUser.setUser(null);
+        }
+    }, [logoutStatus, navigate])
 
     async function logout(e: FormEvent) {
-        try {
-            const result = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/logout`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include'
-            })
-
-            if (result.status === 200) {
-                loggedInUser.setUser(null);
-                navigate('/login');
-            } else {
-                throw Error('Error logging out');
-            }
-        } catch (error) {
-            console.error(error);
-        }
+        e.preventDefault();
+        sendLogoutRequest();
     }
 
     return (
