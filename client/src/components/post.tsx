@@ -19,19 +19,20 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
     const [commentText, setCommentText] = useState<string>('');
     const loggedInUser = useContext(LoggedInUserContext);
 
-    // TODO: add delete confirmation popup dialog
     async function deletePost() {
-        try {
-            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/posts/${post._id}/delete`, {
-                method: 'DELETE'
-            })
+        if (window.confirm('Are you sure you want to delete this post?')) {
+            try {
+                const response = await fetch(`${process.env.REACT_APP_BASE_URL}/posts/${post._id}/delete`, {
+                    method: 'DELETE'
+                })
 
-            if (response.status === 200) {
-                window.alert('Deleted post');
-                onPostDelete(post._id);
+                if (response.status === 200) {
+                    window.alert('Deleted post');
+                    onPostDelete(post._id);
+                }
+            } catch (error) {
+                console.error(error);
             }
-        } catch (error) {
-            console.error(error);
         }
     }
 
