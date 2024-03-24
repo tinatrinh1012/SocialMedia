@@ -9,7 +9,7 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
     const loggedInUser = useContext(LoggedInUserContext);
-    const { sendRequest: sendLoginRequest, data: loginUser, status: loginStatus } = usePost<UserModel>(`/auth/login`, { username: username, password: password });
+    const { sendRequest: sendLoginRequest, data: loginUser, status: loginStatus, loading } = usePost<UserModel>(`/auth/login`, { username: username, password: password });
 
     useEffect(() => {
         if (loginStatus === 200) {
@@ -44,7 +44,12 @@ export default function LoginPage() {
                         placeholder="Password"
                         onChange={(e) => {setPassword(e.target.value)}}></input>
                 </div>
-                <button type="submit" className="btn btn-primary">Log in</button>
+                <button type="submit" className="btn btn-primary mt-3">
+                    Log in
+                    {loading &&
+                        <div className="spinner-border spinner-border-sm ms-2" role="status"></div>
+                    }
+                </button>
             </form>
         </div>
     )
