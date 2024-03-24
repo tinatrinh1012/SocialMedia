@@ -221,7 +221,7 @@ export default function Post({ post, onPostDelete, onPostUpdate }: PostProps) {
                         <div className="input-group">
                             <input value={commentText} onChange={ e => setCommentText(e.target.value) } type="text" className="form-control" placeholder="Add comment"></input>
                             <div className="input-group-append">
-                                <button onClick={addComment} className="btn btn btn-outline-primary" type="button">Add</button>
+                                <button onClick={addComment} className="btn btn btn-outline-primary ms-2" type="button">Add</button>
                             </div>
                         </div>
                     </div>

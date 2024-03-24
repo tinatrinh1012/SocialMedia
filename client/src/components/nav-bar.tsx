@@ -23,13 +23,12 @@ export default function NavBar() {
     return (
         <div>
             <nav className="navbar navbar-expand-lg navbar-dark bg-primary" style={{color: "white"}}>
-                <div className="container-fluid">
                     <h1 className="navbar-brand mb-0">JustLikeFacebook</h1>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav">
+                        <ul className="navbar-nav me-auto">
                             {loggedInUser.user ? (
                                 <>
                                     <li className="nav-item">
@@ -53,13 +52,14 @@ export default function NavBar() {
                                 </>
                             )}
                         </ul>
+                        <div>
+                            <h1 className="navbar-brand mb-0">
+                                <Link to={`/user/${loggedInUser?.user?.username}`} className="nav-link">
+                                    { loggedInUser?.user?.firstName} { loggedInUser?.user?.lastName}
+                                </Link>
+                            </h1>
+                        </div>
                     </div>
-                </div>
-                <h1 className="navbar-brand mb-0">
-                    <Link to={`/user/${loggedInUser?.user?.username}`} className="nav-link">
-                        { loggedInUser?.user?.firstName} { loggedInUser?.user?.lastName}
-                    </Link>
-                </h1>
             </nav>
         </div>
     )
