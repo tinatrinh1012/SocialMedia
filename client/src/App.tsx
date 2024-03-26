@@ -25,8 +25,12 @@ export default function App() {
                 navigate('/login');
             }
         }
-        getLoggedInUser();
-    }, [navigate])
+
+        if (user == null) {
+            getLoggedInUser();
+        }
+
+    }, [navigate, user])
 
     // TODO: understand why need useMemo for context value
     // while passing {user, setUser} straight to provider value would cause infinite loop re-rendering

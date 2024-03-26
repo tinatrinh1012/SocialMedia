@@ -13,7 +13,7 @@ export default function NavBar() {
             navigate('/login');
             loggedInUser.setUser(null);
         }
-    }, [loggedInUser, logoutStatus, navigate])
+    }, [logoutStatus, navigate])
 
     async function logout(e: FormEvent) {
         e.preventDefault();

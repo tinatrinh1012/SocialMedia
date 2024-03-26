@@ -9,7 +9,10 @@ export function usePost<T>(url: string, body: any = undefined): Response<T> {
 
     const post = useCallback(async () => {
         console.log('post', url);
+        setStatus(0);
+        setData(undefined as unknown as T);
         setLoading(true);
+        setError(undefined);
         try {
             const response = await fetch(`${process.env.REACT_APP_BASE_URL}${url}`, {
                 credentials: 'include',

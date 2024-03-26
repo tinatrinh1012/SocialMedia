@@ -16,7 +16,7 @@ export default function LoginPage() {
             navigate(`/news-feed`);
             loggedInUser.setUser(loginUser);
         }
-    }, [loggedInUser, loginStatus, loginUser, navigate])
+    }, [loginStatus, loginUser, navigate])
 
     async function login(e: FormEvent) {
         e.preventDefault();
