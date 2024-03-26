@@ -32,17 +32,9 @@ export default function App() {
 
     }, [navigate, user])
 
-    // TODO: understand why need useMemo for context value
-    // while passing {user, setUser} straight to provider value would cause infinite loop re-rendering
-    // memoize the full context value
-    const userContextValue = useMemo(() => ({
-        user,
-        setUser,
-    }), [user, setUser])
-
     return (
         <>
-            <LoggedInUserContext.Provider value={userContextValue}>
+            <LoggedInUserContext.Provider value={{user, setUser}}>
                 <div className="sticky-top">
                     <NavBar/>
                 </div>
