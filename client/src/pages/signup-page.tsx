@@ -1,6 +1,8 @@
-import { FormEvent, useContext, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoggedInUserContext } from "../App";
+import { usePost } from "../hooks/usePost";
+import { UserModel } from "../models/user";
 
 export default function SignUpPage() {
     const [username, setUsername] = useState('');
@@ -9,32 +11,24 @@ export default function SignUpPage() {
     const [lastName, setLastName] = useState('');
     const loggedInUser = useContext(LoggedInUserContext);
     const navigate = useNavigate();
+    const {sendRequest: sendSignupRequest, data: signedUpUser, status, loading} = usePost<UserModel>('/auth/signup',
+        {
+            username: username,
+            password: password,
+            firstName: firstName,
+            lastName: lastName
+        })
+
+    useEffect(() => {
+        if (status === 200) {
+            navigate(`/user/${username}`);
+            loggedInUser.setUser(signedUpUser);
+        }
+    }, [navigate, signedUpUser, status, username])
 
     async function signup(e: FormEvent) {
         e.preventDefault();
-        try {
-            const result = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/signup`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: 'include',
-                body: JSON.stringify({
-                    username: username,
-                    password: password,
-                    firstName: firstName,
-                    lastName: lastName
-                }),
-            })
-
-            if (result.status === 200) {
-                navigate(`/user/${username}`);
-                const user = await result.json();
-                loggedInUser.setUser(user);
-            }
-        } catch (error) {
-            console.error(error);
-        }
+        sendSignupRequest();
     }
 
     return (
@@ -74,7 +68,12 @@ export default function SignUpPage() {
                         placeholder="Password"
                         onChange={(e) => {setPassword(e.target.value)}}></input>
                 </div>
-                <button type="submit" className="btn btn-primary">Sign Up</button>
+                <button type="submit" className="btn btn-primary mt-3">
+                    Sign Up
+                    {loading &&
+                        <div className="spinner-border spinner-border-sm ms-2" role="status"></div>
+                    }
+                </button>
             </form>
         </div>
     )
