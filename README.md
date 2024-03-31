@@ -24,6 +24,6 @@ Try it out at: https://socialmedia-client-7by8.onrender.com
 
 It's ideal to access and use this app in Chrome since other browsers may have certain security settings that are not accounted for in this app. 
 
-You can sign up with a username and password, or quickly check it out with this credential: 
-- username: alice
-- password: letmein
+You can sign up with a username and password, or quickly check it out with these 2 credentials: 
+- username: alice & password: letmein
+- username: bob & password: letmein
